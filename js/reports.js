@@ -66,24 +66,39 @@ async function refreshReports() {
     const qs = getQueryString();
     let data = null;
 
+    // Try all candidate endpoints with and without /all
+    const endpointsToTry = [];
     for (const base of API_CANDIDATES) {
+        endpointsToTry.push(`${base}/all${qs}`);
+        endpointsToTry.push(`${base}${qs}`);
+    }
+
+    for (const url of endpointsToTry) {
         try {
-            const response = await fetch(`${base}/all${qs}`, { cache: 'no-store' });
+            const response = await fetch(url, { cache: 'no-store' });
             if (response.ok) {
                 const resJson = await response.json();
-                if (resJson.success && resJson.data) {
+                if (resJson && resJson.success && resJson.data) {
                     data = resJson.data;
+                    break;
+                } else if (resJson && resJson.kpis) {
+                    data = resJson;
                     break;
                 }
             }
         } catch (e) {
-            // Try next
+            // Try next endpoint
         }
     }
 
     if (data) {
-        updateKPIs(data.kpis || {});
-        drawAllCharts(data.charts || {});
+        try {
+            updateKPIs(data.kpis || {});
+            drawAllCharts(data.charts || {});
+            if (errEl) errEl.style.display = 'none';
+        } catch (renderErr) {
+            console.error("[Reports] Render error:", renderErr);
+        }
     } else {
         if (errEl) errEl.style.display = 'flex';
     }
@@ -164,20 +179,24 @@ function handleEmptyData(ctx, canvas) {
 
 function initCanvas(canvasId) {
     const canvas = document.getElementById(canvasId);
+    if (!canvas) return null;
     const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
     
     const container = canvas.parentElement;
-    const rect = container.getBoundingClientRect();
+    const rect = container ? container.getBoundingClientRect() : { width: 400, height: 320, left: 0, top: 0 };
+    const width = Math.max(rect.width || 400, 200);
+    const height = Math.max(rect.height || 320, 200);
     
     // Handle high DPI displays
     const dpr = window.devicePixelRatio || 1;
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
     ctx.scale(dpr, dpr);
-    canvas.style.width = `${rect.width}px`;
-    canvas.style.height = `${rect.height}px`;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
     
-    return { canvas, ctx, width: rect.width, height: rect.height, rect };
+    return { canvas, ctx, width, height, rect };
 }
 
 function drawGridAndAxes(ctx, width, height, padding, maxValue, yLabelFormatter) {
@@ -236,7 +255,9 @@ function setupTooltip(canvas, elements, rect) {
 }
 
 function createBarChart(canvasId, data, xLabel, yLabel, formatter, customColors = null) {
-    const { canvas, ctx, width, height, rect } = initCanvas(canvasId);
+    const canvasObj = initCanvas(canvasId);
+    if (!canvasObj) return;
+    const { canvas, ctx, width, height, rect } = canvasObj;
     if (!data || data.length === 0) return handleEmptyData(ctx, canvas);
 
     const padding = { top: 30, right: 20, bottom: 50, left: 70 };
@@ -280,7 +301,9 @@ function createBarChart(canvasId, data, xLabel, yLabel, formatter, customColors 
 }
 
 function createHorizontalBarChart(canvasId, data, yLabel, xLabel, formatter) {
-    const { canvas, ctx, width, height, rect } = initCanvas(canvasId);
+    const canvasObj = initCanvas(canvasId);
+    if (!canvasObj) return;
+    const { canvas, ctx, width, height, rect } = canvasObj;
     if (!data || data.length === 0) return handleEmptyData(ctx, canvas);
 
     const padding = { top: 30, right: 50, bottom: 40, left: 100 }; // Extra left padding for labels
@@ -348,7 +371,9 @@ function createHorizontalBarChart(canvasId, data, yLabel, xLabel, formatter) {
 }
 
 function createLineChart(canvasId, data, xLabel, yLabel, formatter) {
-    const { canvas, ctx, width, height, rect } = initCanvas(canvasId);
+    const canvasObj = initCanvas(canvasId);
+    if (!canvasObj) return;
+    const { canvas, ctx, width, height, rect } = canvasObj;
     if (!data || data.length === 0) return handleEmptyData(ctx, canvas);
 
     const padding = { top: 30, right: 30, bottom: 50, left: 70 };
@@ -414,7 +439,9 @@ function createLineChart(canvasId, data, xLabel, yLabel, formatter) {
 }
 
 function createPieChart(canvasId, data, categoryLabel, valueLabel, formatter) {
-    const { canvas, ctx, width, height, rect } = initCanvas(canvasId);
+    const canvasObj = initCanvas(canvasId);
+    if (!canvasObj) return;
+    const { canvas, ctx, width, height, rect } = canvasObj;
     if (!data || data.length === 0) return handleEmptyData(ctx, canvas);
 
     const colors = ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#14b8a6'];
