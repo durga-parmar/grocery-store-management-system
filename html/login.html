@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery Store Management System</title>
+    <!-- Font Awesome Icons માટેની લિંક -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+
+    <div class="main-container">
+       
+        <!-- મુખ્ય કાર્ડ -->
+        <div class="login-card login-card--relative">
+
+            <!-- Home Button -->
+            <a href="../index.html" class="btn-home">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true">
+                    <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9.5z"/>
+                    <polyline points="9 21 9 13 15 13 15 21"/>
+                </svg>
+                Home
+            </a>
+
+            <!-- હેડર અને લોગો સેક્શન -->
+            <div class="header-section">
+                <div class="logo-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <h1>Grocery Store</h1>
+                <h2>Management System</h2>
+                <div class="divider">
+                    <span>Choose Your Role to Continue</span>
+                </div>
+            </div>
+
+            <!-- રોલ સિલેક્શન બોક્સ (Admin & Cashier) -->
+            <div class="roles-container">
+                
+                <!-- એડમિન કાર્ડ -->
+                <div class="role-box admin-box">
+                    <div class="role-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3>Admin</h3>
+                    <p>Manage store, products, employees and reports</p>
+
+                    <button class="btn btn-admin" onclick="window.location.href='admin_login.html'">
+                    Login <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- કેશિયર કાર્ડ -->
+                <div class="role-box cashier-box">
+                    <div class="role-icon">
+                        <i class="fas fa-cash-register"></i>
+                    </div>
+                    <h3>Cashier</h3>
+                    <p>Billing, sales and customer transactions</p>
+                    <button class="btn btn-cashier" onclick="window.location.href='cashier_login.html'">
+                    Login <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- નીચેનું ફૂટર સેક્શન -->
+        <div class="footer-bar">
+            <div class="footer-item">
+                <i class="fas fa-shield-alt"></i>
+                <div>
+                    <strong>Secure</strong>
+                    <span>Your data is safe</span>
+                </div>
+            </div>
+            <div class="footer-item">
+                <i class="far fa-clock"></i>
+                <div>
+                    <strong>Efficient</strong>
+                    <span>Manage Better, Sell Faster</span>
+                </div>
+            </div>
+            <div class="footer-item">
+                <i class="fas fa-chart-line"></i>
+                <div>
+                    <strong>Reliable</strong>
+                    <span>Built for Retail Success</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

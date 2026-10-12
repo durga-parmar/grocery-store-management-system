@@ -1,0 +1,538 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdminPanel Dashboard</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="../css/admin_dashboard.css">
+    <link rel="stylesheet" href="../css/reports.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>AdminPanel</span>
+        </div>
+
+        <nav>
+
+            <a href="/admin_dash.html" class="active">
+                <i class="fa-solid fa-table-cells-large"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="/user_dash.html">
+                <i class="fa-solid fa-user"></i>
+                <span>Users</span>
+            </a>
+
+            <a href="/product.html">
+                <i class="fa-solid fa-cube"></i>
+                <span>Products</span>
+            </a>
+
+            <a href="/order.html">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span>Orders</span>
+            </a>
+
+            <a href="/categories.html">
+                <i class="fa-solid fa-grip"></i>
+                <span>Categories</span>
+            </a>
+
+            <a href="/customer.html">
+                <i class="fa-solid fa-users"></i>
+                <span>Customers</span>
+            </a>
+
+            <!-- Reports page intentionally disabled -->
+            <!--
+            <a href="/report.html">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Reports</span>
+            </a>
+            -->
+
+            <a href="/setting.html">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+
+            <!-- Logout sidebar link intentionally disabled -->
+            <!--
+            <a href="/login.html"
+               data-bs-toggle="modal"
+               data-bs-target="#logoutModal"
+               class="logout-sidebar-link"
+               style="text-decoration:none;">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </a>
+            -->
+
+        </nav>
+    </aside>
+
+
+    <!-- ==================== MAIN ==================== -->
+    <div class="main">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <i class="fa-solid fa-bars hamburger"></i>
+
+                <div class="search-box">
+                    <input type="text" placeholder="Search...">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="total-mini">
+                    Total
+                    <strong>0</strong>
+                </div>
+
+                <div class="profile">
+                    <div class="avatar"></div>
+                    <i class="fa-solid fa-chevron-down"
+                       style="font-size:12px;color:#94a3b8;"></i>
+                </div>
+
+            </div>
+        </header>
+
+
+        <!-- ==================== DASHBOARD CONTENT ==================== -->
+        <main class="content">
+
+            <h1>Dashboard</h1>
+            <p class="subtitle">Welcome back, Admin!</p>
+
+
+            <!-- ==================== TOP STAT CARDS ==================== -->
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fa-solid fa-user-group"></i>
+                    </div>
+
+                    <div>
+                        <div class="stat-label">Total Users</div>
+                        <div class="stat-value">0</div>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </div>
+
+                    <div>
+                        <div class="stat-label">Total Orders</div>
+                        <div class="stat-value">0</div>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fa-solid fa-box"></i>
+                    </div>
+
+                    <div>
+                        <div class="stat-label">Total Products</div>
+                        <div class="stat-value">0</div>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon red">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                    </div>
+
+                    <div>
+                        <div class="stat-label">Total Revenue</div>
+                        <div class="stat-value">₹ 0</div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <h2 style="margin-top: 40px; color: #1e293b;">
+                Reports &amp; Analysis
+            </h2>
+
+
+            <!-- DATE FILTER -->
+            <div class="date-filter" style="margin-bottom: 20px;">
+
+                <button class="filter-btn active" data-range="today">
+                    Today
+                </button>
+
+                <button class="filter-btn" data-range="yesterday">
+                    Yesterday
+                </button>
+
+                <button class="filter-btn" data-range="last7days">
+                    Last 7 Days
+                </button>
+
+                <button class="filter-btn" data-range="last30days">
+                    Last 30 Days
+                </button>
+
+                <button class="filter-btn" data-range="thisMonth">
+                    This Month
+                </button>
+
+                <button class="filter-btn" data-range="thisYear">
+                    This Year
+                </button>
+
+
+                <div class="custom-date-container"
+                     style="display:inline-block; margin-left:10px;">
+
+                    <label>
+                        From:
+                        <input type="date" id="dateFrom">
+                    </label>
+
+                    <label>
+                        To:
+                        <input type="date" id="dateTo">
+                    </label>
+
+                    <button class="filter-btn apply-btn"
+                            id="applyCustomDate">
+                        Apply
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- LOADING -->
+            <div id="loadingOverlay"
+                 class="loading-overlay"
+                 style="display:none;">
+
+                <div class="spinner"></div>
+                <p>Loading report data...</p>
+
+            </div>
+
+
+            <!-- ERROR -->
+            <div id="errorOverlay"
+                 class="error-overlay"
+                 style="display:none;">
+
+                <p>Unable to load report data.</p>
+
+            </div>
+
+
+            <!-- ==================== KPI SECTION ==================== -->
+            <section class="kpi-grid">
+
+                <div class="kpi-card">
+                    <div class="kpi-title">Total Sales</div>
+                    <div class="kpi-value" id="kpiTotalSales">₹0</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-title">Total Orders</div>
+                    <div class="kpi-value" id="kpiTotalOrders">0</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-title">Total Products</div>
+                    <div class="kpi-value" id="kpiTotalProducts">0</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-title">Total Customers</div>
+                    <div class="kpi-value" id="kpiTotalCustomers">0</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-title">Today's Sales</div>
+                    <div class="kpi-value" id="kpiTodaySales">₹0</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-title">Today's Orders</div>
+                    <div class="kpi-value" id="kpiTodayOrders">0</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-title">Low Stock Products</div>
+                    <div class="kpi-value" id="kpiLowStock">0</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-title">Cancelled Orders</div>
+                    <div class="kpi-value" id="kpiCancelledOrders">0</div>
+                </div>
+
+            </section>
+
+
+            <!-- ==================== CHARTS SECTION ==================== -->
+            <section class="charts-container" style="margin-top:30px;">
+
+                <!-- Sales by Category + Sales Distribution -->
+                <div class="chart-row">
+
+                    <div class="chart-card">
+                        <h3>Sales by Category</h3>
+
+                        <div class="canvas-container">
+                            <canvas id="chartSalesByCategory"></canvas>
+                        </div>
+                    </div>
+
+
+                    <div class="chart-card">
+                        <h3>Sales Distribution by Category</h3>
+
+                        <div class="canvas-container">
+                            <canvas id="chartSalesDistribution"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Monthly Sales + Daily Sales -->
+                <div class="chart-row">
+
+                    <div class="chart-card">
+                        <h3>Monthly Sales Trend</h3>
+
+                        <div class="canvas-container">
+                            <canvas id="chartMonthlySales"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3>Daily Sales Trend</h3>
+
+                        <div class="canvas-container">
+                            <canvas id="chartDailySales"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Top Products + Order Status -->
+                <div class="chart-row">
+
+                    <div class="chart-card">
+                        <h3>Top 10 Best-Selling Products</h3>
+
+                        <div class="canvas-container">
+                            <canvas id="chartTopSelling"></canvas>
+                        </div>
+                    </div>
+
+
+                    <div class="chart-card">
+                        <h3>Order Status Distribution</h3>
+
+                        <div class="canvas-container">
+                            <canvas id="chartOrderStatus"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Payment + Quantity -->
+                <div class="chart-row">
+
+                    <div class="chart-card">
+                        <h3>Payment Method Distribution</h3>
+
+                        <div class="canvas-container">
+                            <canvas id="chartPaymentMethod"></canvas>
+                        </div>
+                    </div>
+
+
+                    <div class="chart-card">
+                        <h3>Quantity Sold by Category</h3>
+
+                        <div class="canvas-container">
+                            <canvas id="chartQuantityByCategory"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Product Revenue + Customers -->
+                <div class="chart-row">
+
+                    <div class="chart-card">
+                        <h3>Product-wise Revenue</h3>
+
+                        <div class="canvas-container">
+                            <canvas id="chartProductRevenue"></canvas>
+                        </div>
+                    </div>
+
+
+                    <div class="chart-card">
+                        <h3>Top 10 Customers by Orders</h3>
+
+                        <div class="canvas-container">
+                            <canvas id="chartTopCustomers"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Stock + Low Stock -->
+                <div class="chart-row">
+
+                    <div class="chart-card">
+                        <h3>Current Stock by Category</h3>
+
+                        <div class="canvas-container">
+                            <canvas id="chartStockByCategory"></canvas>
+                        </div>
+                    </div>
+
+
+                    <div class="chart-card">
+                        <h3>Low Stock Products</h3>
+
+                        <div class="canvas-container">
+                            <canvas id="chartLowStock"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Sales Comparison -->
+                <div class="chart-row">
+
+                    <div class="chart-card">
+
+                        <h3>Today's Sales vs Yesterday's Sales</h3>
+
+                        <div class="canvas-container">
+                            <canvas id="chartSalesComparison"></canvas>
+                        </div>
+
+                        <div id="salesComparisonText"
+                             style="text-align:center;
+                                    margin-top:10px;
+                                    font-weight:bold;
+                                    font-size:1.1em;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script src="../js/admin_dashboard.js?v=9"></script>
+    <script src="../js/reports.js?v=2"></script>
+
+
+    <!-- ==================== LOGOUT MODAL ==================== -->
+
+    <div class="modal fade"
+         id="logoutModal"
+         tabindex="-1"
+         aria-labelledby="logoutModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content" style="color:#000;">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title" id="logoutModalLabel">
+                        Confirm Logout
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close">
+                    </button>
+
+                </div>
+
+
+                <div class="modal-body">
+                    Are you sure you want to logout?
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <a href="/login.html"
+                       class="btn btn-primary">
+                        Yes, Logout
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

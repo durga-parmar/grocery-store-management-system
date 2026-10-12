@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cashier Orders - Grocery Store Management</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Cashier Orders Stylesheet -->
+    <link rel="stylesheet" href="../css/cashier_order.css">
+    <link rel="stylesheet" href="../css/cashier_notifications.css">
+</head>
+<body>
+
+<div class="app-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>CashierPanel</span>
+        </div>
+        <ul class="sidebar-menu">
+            <!-- 1. Dashboard -->
+            <li>
+                <a href="/cashierdash.html">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <!-- 2. New Sale -->
+            <li>
+                <a href="/pos.html">
+                    <i class="fa-solid fa-cash-register"></i>
+                    <span>New Sale</span>
+                </a>
+            </li>
+
+            <!-- 3. Orders (Active) -->
+            <li class="active">
+                <a href="/cashier_order.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Orders</span>
+                </a>
+            </li>
+
+            <!-- 4. Customers -->
+            <li>
+                <a href="/cashier_customer.html">
+                    <i class="fa-solid fa-user-group"></i>
+                    <span>Customers</span>
+                </a>
+            </li>
+
+            <!-- 5. Products -->
+            <li>
+                <a href="/cashier_product.html">
+                    <i class="fa-solid fa-box"></i>
+                    <span>Products</span>
+                </a>
+            </li>
+
+            <!-- 6. Invoices & Receipts -->
+            <li>
+                <a href="/invoice_receipt.html">
+                    <i class="fa-solid fa-file-invoice"></i>
+                    <span>Invoices &amp; Receipts</span>
+                </a>
+            </li>
+
+            <!-- 7. Sales Reports -->
+            <li>
+                <a href="/sales_report.html">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <span>Sales Reports</span>
+                </a>
+            </li>
+
+            <!-- 8. Settings -->
+            <li>
+                <a href="/setting.html">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+        <!-- TOPBAR HEADER -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="hamburger" id="menuBtn" type="button" aria-label="Toggle Sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div>
+                    <h1>Cashier Orders</h1>
+                    <p class="header-subtitle">View and monitor all POS sales and customer order records.</p>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <div class="date-badge">
+                    <i class="fa-solid fa-calendar-day"></i>
+                    <span id="liveCurrentDate">Loading...</span>
+                </div>
+
+                <!-- Header User Profile (Dynamic Cashier Details) -->
+                <div class="profile-wrapper" id="profileWrapper">
+                    <button class="profile-trigger" id="profileTrigger" type="button" aria-expanded="false" aria-haspopup="true">
+                        <div class="avatar" id="headerAvatar">CA</div>
+                        <div class="profile-info">
+                            <strong id="headerUserName">Cashier</strong>
+                            <span id="headerUserRole">Cashier</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-down" style="font-size: 11px; margin-left: 4px; color: var(--muted);"></i>
+                    </button>
+
+                    <!-- Profile Dropdown Menu -->
+                    <div class="profile-menu" id="profileMenu">
+                        <div class="profile-summary">
+                            <div class="avatar large" id="dropdownAvatar">CA</div>
+                            <div class="summary-details">
+                                <strong id="dropdownFullName">Cashier</strong>
+                                <span id="dropdownEmail">cashier@store.com</span>
+                                <small id="dropdownRole">Cashier</small>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <a href="/setting.html" class="profile-item" id="profileLink">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                        <button class="profile-item logout-item" id="logoutBtn" type="button">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- PAGE BODY CONTENT -->
+        <section class="content">
+            <!-- 1. SUMMARY STATS CARDS (6 CARDS) -->
+            <section class="summary-grid">
+                <!-- Total Orders -->
+                <div class="summary-card">
+                    <div class="summary-icon blue"><i class="fa-solid fa-cart-shopping"></i></div>
+                    <div>
+                        <span>Total Orders</span>
+                        <strong id="kpiTotalOrders">0</strong>
+                    </div>
+                </div>
+
+                <!-- Today's Orders -->
+                <div class="summary-card">
+                    <div class="summary-icon purple"><i class="fa-solid fa-calendar-day"></i></div>
+                    <div>
+                        <span>Today's Orders</span>
+                        <strong id="kpiTodayOrders">0</strong>
+                    </div>
+                </div>
+
+                <!-- Completed Orders -->
+                <div class="summary-card">
+                    <div class="summary-icon green"><i class="fa-solid fa-circle-check"></i></div>
+                    <div>
+                        <span>Completed Orders</span>
+                        <strong id="kpiCompletedOrders">0</strong>
+                    </div>
+                </div>
+
+                <!-- Pending Orders -->
+                <div class="summary-card">
+                    <div class="summary-icon amber"><i class="fa-solid fa-clock"></i></div>
+                    <div>
+                        <span>Pending Orders</span>
+                        <strong id="kpiPendingOrders">0</strong>
+                    </div>
+                </div>
+
+                <!-- Cancelled Orders -->
+                <div class="summary-card">
+                    <div class="summary-icon red"><i class="fa-solid fa-circle-xmark"></i></div>
+                    <div>
+                        <span>Cancelled Orders</span>
+                        <strong id="kpiCancelledOrders">0</strong>
+                    </div>
+                </div>
+
+                <!-- Today's Sales -->
+                <div class="summary-card">
+                    <div class="summary-icon emerald"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+                    <div>
+                        <span>Today's Sales</span>
+                        <strong id="kpiTodaySales">₹0.00</strong>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. SEARCH & MULTI-FILTER CONTROLS BAR -->
+            <section class="filter-card">
+                <div class="filter-grid">
+                    <!-- Search Input -->
+                    <label class="search-label">
+                        <span><i class="fa-solid fa-magnifying-glass"></i> Search Orders</span>
+                        <input id="searchKeyword" type="text" placeholder="Search by Order ID (#29), Customer Name, or Mobile...">
+                    </label>
+
+                    <!-- Date Filter -->
+                    <label>
+                        <span>Date</span>
+                        <input type="date" id="dateFilter">
+                    </label>
+
+                    <!-- Order Status Filter -->
+                    <label>
+                        <span>Order Status</span>
+                        <select id="orderStatusFilter">
+                            <option value="all">All Order Status</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </label>
+
+                    <!-- Payment Status Filter -->
+                    <label>
+                        <span>Payment Status</span>
+                        <select id="paymentStatusFilter">
+                            <option value="all">All Payment Status</option>
+                            <option value="Paid">Paid</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Failed">Failed</option>
+                        </select>
+                    </label>
+
+                    <!-- Actions -->
+                    <div class="filter-actions">
+                        <button class="primary-btn" id="filterBtn" type="button">
+                            <i class="fa-solid fa-filter"></i> Filter
+                        </button>
+                        <button class="secondary-btn" id="refreshBtn" type="button">
+                            <i class="fa-solid fa-rotate"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. ORDERS TABLE CARD -->
+            <section class="table-card">
+                <div class="table-header">
+                    <div class="table-title">
+                        <i class="fa-solid fa-list-check" style="color: var(--green-dark);"></i>
+                        <h3>All Customer Orders</h3>
+                    </div>
+                    <span class="order-count-tag" id="orderCountTag">Showing 0 orders</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer Name</th>
+                                <th>Mobile</th>
+                                <th>Date &amp; Time</th>
+                                <th>Total Amount</th>
+                                <th>Payment Method</th>
+                                <th>Payment Status</th>
+                                <th>Order Status</th>
+                                <th>Cashier</th>
+                                <th style="text-align: center;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <tr>
+                                <td colspan="10" class="loading-cell">
+                                    <i class="fa-solid fa-spinner fa-spin"></i> Loading orders from database...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </main>
+</div>
+
+<!-- ============================================================
+     READ-ONLY VIEW ORDER DETAILS MODAL
+     ============================================================ -->
+<div class="modal" id="viewOrderModal">
+    <div class="modal-dialog">
+        <div class="modal-header-bar">
+            <div class="modal-title">
+                <i class="fa-solid fa-file-lines" style="color: var(--green-dark);"></i>
+                <span id="modalOrderTitle">Order Details #000</span>
+            </div>
+            <button class="close-modal-btn" id="closeOrderModalBtn" type="button" aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="modal-body-scrollable">
+            <!-- 1. ORDER & PAYMENT STATUS HIGHLIGHT -->
+            <div class="order-highlight-banner">
+                <div class="highlight-col">
+                    <span class="hl-label">Order ID</span>
+                    <strong class="hl-value" id="modOrderId">#000</strong>
+                </div>
+                <div class="highlight-col">
+                    <span class="hl-label">Date &amp; Time</span>
+                    <strong class="hl-value" id="modOrderDateTime">2026-09-02 12:00:00</strong>
+                </div>
+                <div class="highlight-col">
+                    <span class="hl-label">Order Status</span>
+                    <span id="modOrderStatusBadge" class="status-badge status-completed">Completed</span>
+                </div>
+                <div class="highlight-col">
+                    <span class="hl-label">Payment Status</span>
+                    <span id="modPaymentStatusBadge" class="badge-paid">Paid (Cash)</span>
+                </div>
+            </div>
+
+            <!-- 2. TWO-COLUMN DETAILS: ORDER & CUSTOMER -->
+            <div class="details-grid-two">
+                <!-- Order Details Card -->
+                <div class="info-block">
+                    <h4><i class="fa-solid fa-info-circle"></i> Order Details</h4>
+                    <div class="info-row">
+                        <span>Cashier:</span>
+                        <strong id="modCashierName">Cashier</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Payment Mode:</span>
+                        <strong id="modPaymentMethod"><i class="fa-solid fa-money-bill-wave text-green"></i> Cash</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Total Items:</span>
+                        <strong id="modTotalItemsCount">0 items</strong>
+                    </div>
+                </div>
+
+                <!-- Customer Details Card -->
+                <div class="info-block">
+                    <h4><i class="fa-solid fa-user"></i> Customer Details</h4>
+                    <div class="info-row">
+                        <span>Customer Name:</span>
+                        <strong id="modCustomerName">Aadhya Desai</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Mobile No:</span>
+                        <strong id="modCustomerMobile">9654012348</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Email:</span>
+                        <strong id="modCustomerEmail">aadhya.desai@example.com</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Address / City:</span>
+                        <strong id="modCustomerAddress">Jamnagar</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. ITEMIZED PRODUCTS TABLE -->
+            <div class="items-block">
+                <h4><i class="fa-solid fa-basket-shopping"></i> Product Details</h4>
+                <table class="modal-items-table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th style="text-align: center;">Qty</th>
+                            <th style="text-align: right;">Unit Price</th>
+                            <th style="text-align: right;">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modItemsTableBody">
+                        <!-- Loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 4. PAYMENT BREAKDOWN -->
+            <div class="payment-breakdown-card">
+                <div class="pay-row">
+                    <span>Subtotal:</span>
+                    <strong id="modSubtotalAmt">₹0.00</strong>
+                </div>
+                <div class="pay-row">
+                    <span>GST / Taxes:</span>
+                    <span>₹0.00 (0%)</span>
+                </div>
+                <div class="divider-dashed"></div>
+                <div class="pay-row grand">
+                    <span>Grand Total:</span>
+                    <strong id="modGrandTotalAmt" class="text-green">₹0.00</strong>
+                </div>
+                <div class="divider-dashed"></div>
+                <div class="pay-row">
+                    <span>Cash Received:</span>
+                    <strong id="modCashReceived">₹0.00</strong>
+                </div>
+                <div class="pay-row">
+                    <span>Change Returned:</span>
+                    <strong id="modChangeReturned" class="text-blue">₹0.00</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer-bar">
+            <a href="#" class="view-invoice-link-btn" id="modViewInvoiceLink">
+                <i class="fa-solid fa-file-invoice"></i> View Invoice &amp; Print
+            </a>
+            <button class="secondary-btn" id="closeOrderModalBottomBtn" type="button">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- LOGOUT CONFIRMATION MODAL -->
+<div class="modal" id="logoutModal">
+    <div class="modal-card confirm-card">
+        <div class="confirm-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
+        <h2>Confirm Logout</h2>
+        <p>Are you sure you want to log out of your Cashier session?</p>
+        <div class="modal-actions">
+            <button class="secondary-btn" id="cancelLogout" type="button">Cancel</button>
+            <button class="danger-btn" id="confirmLogout" type="button">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Yes, Logout
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toastContainer"></div>
+
+<!-- JAVASCRIPT -->
+<script src="../js/cashier_order.js"></script>
+<script src="../js/cashier_notifications.js"></script>
+</body>
+</html>

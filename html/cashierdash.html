@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cashier Dashboard - Grocery Store Management System</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Cashier Dashboard Stylesheet -->
+    <link rel="stylesheet" href="../css/cashierdash.css">
+    <link rel="stylesheet" href="../css/cashier_notifications.css">
+</head>
+<body>
+
+<div class="app-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>CashierPanel</span>
+        </div>
+        <ul class="sidebar-menu">
+            <!-- 1. Dashboard (Active) -->
+            <li class="active">
+                <a href="/cashierdash.html">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <!-- 2. New Sale -->
+            <li>
+                <a href="/pos.html">
+                    <i class="fa-solid fa-cash-register"></i>
+                    <span>New Sale</span>
+                </a>
+            </li>
+
+            <!-- 3. Orders -->
+            <li>
+                <a href="/cashier_order.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Orders</span>
+                </a>
+            </li>
+
+            <!-- 4. Customers -->
+            <li>
+                <a href="/cashier_customer.html">
+                    <i class="fa-solid fa-user-group"></i>
+                    <span>Customers</span>
+                </a>
+            </li>
+
+            <!-- 5. Products -->
+            <li>
+                <a href="/cashier_product.html">
+                    <i class="fa-solid fa-box"></i>
+                    <span>Products</span>
+                </a>
+            </li>
+
+            <!-- 6. Invoices & Receipts -->
+            <li>
+                <a href="/invoice_receipt.html">
+                    <i class="fa-solid fa-file-invoice"></i>
+                    <span>Invoices &amp; Receipts</span>
+                </a>
+            </li>
+
+            <!-- 7. Sales Reports -->
+            <li>
+                <a href="/sales_report.html">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <span>Sales Reports</span>
+                </a>
+            </li>
+
+            <!-- 8. Settings -->
+            <li>
+                <a href="/setting.html">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main" id="mainContent">
+        <!-- TOPBAR HEADER -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="hamburger" id="menuBtn" type="button" aria-label="Toggle Sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div>
+                    <h1>Cashier Dashboard</h1>
+                    <p class="header-subtitle">Welcome back, <span id="welcomeUserName">Cashier</span>! Here is today's store overview.</p>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <div class="date-badge">
+                    <i class="fa-solid fa-calendar-day"></i>
+                    <span id="liveCurrentDate">Loading date...</span>
+                </div>
+
+                <!-- Header User Profile (Dynamic Cashier Details) -->
+                <div class="profile-wrapper" id="profileWrapper">
+                    <button class="profile-trigger" id="profileTrigger" type="button" aria-expanded="false" aria-haspopup="true">
+                        <div class="avatar" id="headerAvatar">CA</div>
+                        <div class="profile-info">
+                            <strong id="headerUserName">Cashier</strong>
+                            <span id="headerUserRole">Cashier</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-down" style="font-size: 11px; margin-left: 4px; color: var(--muted);"></i>
+                    </button>
+
+                    <!-- Profile Dropdown Menu -->
+                    <div class="profile-menu" id="profileMenu">
+                        <div class="profile-summary">
+                            <div class="avatar large" id="dropdownAvatar">CA</div>
+                            <div class="summary-details">
+                                <strong id="dropdownFullName">Cashier</strong>
+                                <span id="dropdownEmail">cashier@store.com</span>
+                                <small id="dropdownRole">Cashier</small>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <a href="/setting.html" class="profile-item" id="profileLink">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                        <button class="profile-item logout-item" id="logoutBtn" type="button">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- DASHBOARD BODY CONTENT -->
+        <section class="content">
+            <!-- 1. DASHBOARD 6 SUMMARY CARDS -->
+            <section class="cards-grid">
+                <!-- Card 1: Today's Sales -->
+                <div class="stat-card">
+                    <div class="stat-icon emerald">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span>Today's Sales</span>
+                        <strong id="statTodaySales">₹0.00</strong>
+                        <small class="stat-sub"><i class="fa-solid fa-arrow-trend-up"></i> Live store revenue</small>
+                    </div>
+                </div>
+
+                <!-- Card 2: Today's Orders -->
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fa-solid fa-receipt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span>Today's Orders</span>
+                        <strong id="statTodayOrders">0</strong>
+                        <small class="stat-sub"><i class="fa-solid fa-clock"></i> Today's transaction count</small>
+                    </div>
+                </div>
+
+                <!-- Card 3: Total Customers -->
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span>Total Customers</span>
+                        <strong id="statTotalCustomers">0</strong>
+                        <small class="stat-sub"><i class="fa-solid fa-address-book"></i> Registered customer base</small>
+                    </div>
+                </div>
+
+                <!-- Card 4: Products Available -->
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span>Products Available</span>
+                        <strong id="statProductsAvailable">0</strong>
+                        <small class="stat-sub"><i class="fa-solid fa-circle-check"></i> In-stock inventory items</small>
+                    </div>
+                </div>
+
+                <!-- Card 5: Low Stock Products -->
+                <div class="stat-card">
+                    <div class="stat-icon amber">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span>Low Stock Products</span>
+                        <strong id="statLowStockProducts">0</strong>
+                        <small class="stat-sub text-amber"><i class="fa-solid fa-circle-exclamation"></i> Needs restocking</small>
+                    </div>
+                </div>
+
+                <!-- Card 6: Completed Orders -->
+                <div class="stat-card">
+                    <div class="stat-icon teal">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span>Completed Orders</span>
+                        <strong id="statCompletedOrders">0</strong>
+                        <small class="stat-sub"><i class="fa-solid fa-bag-shopping"></i> Fulfilled sales orders</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. MAIN 2-COLUMN DASHBOARD SECTIONS -->
+            <div class="dashboard-grid">
+                <!-- LEFT COLUMN -->
+                <div class="grid-column">
+                    <!-- Section 1: Low Stock Alert -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fa-solid fa-triangle-exclamation" style="color: var(--amber);"></i>
+                                <h3>Low Stock Alert</h3>
+                            </div>
+                            <a href="/cashier_product.html" class="card-link">View All Products &rarr;</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Available Stock</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="lowStockTableBody">
+                                    <tr>
+                                        <td colspan="3" class="loading-cell">
+                                            <i class="fa-solid fa-spinner fa-spin"></i> Loading low stock products...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Quick Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fa-solid fa-bolt" style="color: var(--blue);"></i>
+                                <h3>Quick Actions</h3>
+                            </div>
+                        </div>
+                        <div class="quick-actions-grid">
+                            <a href="/pos.html" class="action-btn action-sale">
+                                <div class="action-icon"><i class="fa-solid fa-cash-register"></i></div>
+                                <div>
+                                    <strong>New Sale</strong>
+                                    <span>Create POS invoice</span>
+                                </div>
+                            </a>
+
+                            <a href="/cashier_order.html" class="action-btn action-orders">
+                                <div class="action-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                                <div>
+                                    <strong>Orders</strong>
+                                    <span>Manage sales orders</span>
+                                </div>
+                            </a>
+
+                            <a href="/cashier_customer.html" class="action-btn action-cust">
+                                <div class="action-icon"><i class="fa-solid fa-user-group"></i></div>
+                                <div>
+                                    <strong>Customers</strong>
+                                    <span>View customer directory</span>
+                                </div>
+                            </a>
+
+                            <a href="/invoice_receipt.html" class="action-btn action-inv">
+                                <div class="action-icon"><i class="fa-solid fa-file-invoice"></i></div>
+                                <div>
+                                    <strong>Invoices</strong>
+                                    <span>Print sales receipts</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN -->
+                <div class="grid-column">
+                    <!-- Section 3: Today's Activity Breakdown -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fa-solid fa-chart-pie" style="color: var(--emerald);"></i>
+                                <h3>Today's Activity</h3>
+                            </div>
+                            <span class="badge-live"><i class="fa-solid fa-circle"></i> Live Status</span>
+                        </div>
+                        <div class="activity-breakdown">
+                            <div class="activity-item">
+                                <div class="activity-label">
+                                    <span class="dot dot-blue"></span>
+                                    <span>Today's Total Orders</span>
+                                </div>
+                                <strong id="actTotalOrders">0</strong>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-label">
+                                    <span class="dot dot-green"></span>
+                                    <span>Completed Orders</span>
+                                </div>
+                                <strong id="actCompletedOrders" class="text-green">0</strong>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-label">
+                                    <span class="dot dot-amber"></span>
+                                    <span>Pending Orders</span>
+                                </div>
+                                <strong id="actPendingOrders" class="text-amber">0</strong>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-label">
+                                    <span class="dot dot-red"></span>
+                                    <span>Cancelled Orders</span>
+                                </div>
+                                <strong id="actCancelledOrders" class="text-red">0</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Recent Activity Feed -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fa-solid fa-clock-rotate-left" style="color: var(--purple);"></i>
+                                <h3>Recent Activity</h3>
+                            </div>
+                        </div>
+                        <div class="activity-timeline" id="recentActivityList">
+                            <!-- Timeline Items Loaded Dynamically -->
+                            <div class="timeline-item">
+                                <div class="timeline-icon blue"><i class="fa-solid fa-cart-plus"></i></div>
+                                <div class="timeline-content">
+                                    <strong>New Order #26 Placed</strong>
+                                    <p>Amount: ₹55.00 via Cash Payment</p>
+                                    <small>Just now</small>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-icon green"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                                <div class="timeline-content">
+                                    <strong>Invoice #INV-2026-023 Generated</strong>
+                                    <p>Paid successfully by Customer #23</p>
+                                    <small>15 mins ago</small>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-icon purple"><i class="fa-solid fa-user-plus"></i></div>
+                                <div class="timeline-content">
+                                    <strong>New Customer Registered</strong>
+                                    <p>Patel Rahul added to customer directory</p>
+                                    <small>1 hour ago</small>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-icon amber"><i class="fa-solid fa-box-open"></i></div>
+                                <div class="timeline-content">
+                                    <strong>Stock Low Alert: Salted Butter</strong>
+                                    <p>Only 8 units remaining in inventory</p>
+                                    <small>2 hours ago</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- LOGOUT CONFIRMATION MODAL -->
+<div class="modal" id="logoutModal">
+    <div class="modal-card confirm-card">
+        <div class="confirm-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
+        <h2>Confirm Logout</h2>
+        <p>Are you sure you want to log out of your Cashier session?</p>
+        <div class="modal-actions">
+            <button class="secondary-btn" id="cancelLogout" type="button">Cancel</button>
+            <button class="danger-btn" id="confirmLogout" type="button">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Yes, Logout
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toastContainer"></div>
+
+<!-- JAVASCRIPT -->
+<script src="../js/cashierdash.js"></script>
+<script src="../js/cashier_notifications.js"></script>
+</body>
+</html>

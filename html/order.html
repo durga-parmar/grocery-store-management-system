@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AdminPanel - Orders</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link rel="stylesheet" href="../css/order.css">
+</head>
+
+<body>
+
+<div class="dashboard-wrapper">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="logo-area">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>AdminPanel</span>
+        </div>
+
+        <nav class="sidebar-menu">
+
+            <a href="/admin_dash.html" class="menu-item">
+                <i class="fa-solid fa-table-cells-large"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="/user_dash.html" class="menu-item">
+                <i class="fa-solid fa-user"></i>
+                <span>Users</span>
+            </a>
+
+            <a href="/product.html" class="menu-item">
+                <i class="fa-solid fa-cube"></i>
+                <span>Products</span>
+            </a>
+
+            <a href="/order.html" class="menu-item active">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span>Orders</span>
+            </a>
+
+            <a href="/categories.html" class="menu-item">
+                <i class="fa-solid fa-grip"></i>
+                <span>Categories</span>
+            </a>
+
+            <a href="/customer.html" class="menu-item">
+                <i class="fa-solid fa-users"></i>
+                <span>Customers</span>
+            </a>
+
+            <a href="/setting.html" class="menu-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="main-content">
+
+        <!-- ================= TOPBAR ================= -->
+        <header class="topbar">
+
+            <div class="top-left">
+
+                <button
+                    type="button"
+                    class="sidebar-toggle"
+                    id="sidebarToggle"
+                    aria-label="Toggle sidebar"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="search-box">
+
+                    <input
+                        type="text"
+                        id="headerSearch"
+                        placeholder="Search order ID, customer ID, or name..."
+                    >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                </div>
+
+            </div>
+
+
+            <!-- TOP RIGHT -->
+            <div class="top-right">
+
+                <div class="total-orders">
+
+                    <span>Total Orders</span>
+
+                    <strong id="headerTotal">0</strong>
+
+                </div>
+
+                <!-- USER PROFILE WITH DROPDOWN -->
+                <div class="profile-dropdown-wrapper">
+                    <div
+                        class="blank-profile"
+                        id="profileTrigger"
+                        aria-label="User profile"
+                        title="User Menu"
+                    >
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <div class="profile-dropdown-menu" id="profileDropdownMenu">
+                        <div class="dropdown-header-info">
+                            <strong id="dropdownUserName">Admin User</strong>
+                            <span id="dropdownUserEmail">admin@grocerystore.com</span>
+                        </div>
+                        <div class="dropdown-divider-line"></div>
+                        <a href="/setting.html" class="profile-dropdown-item" id="profileOption">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                        <div class="dropdown-divider-line"></div>
+                        <button type="button" class="profile-dropdown-item logout-item" id="logoutOption">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= PAGE HEADER ================= -->
+        <section class="page-header">
+
+            <div class="page-title">
+
+                <h1>Orders</h1>
+
+                <p>
+                    Manage and track all customer orders
+                </p>
+
+            </div>
+
+            <!-- CREATE ORDER BUTTON -->
+            <button
+                type="button"
+                class="create-order-btn"
+                id="createOrderBtn"
+            >
+                <i class="fa-solid fa-plus"></i>
+                <span>Create Order</span>
+            </button>
+
+        </section>
+
+
+        <!-- ================= STATISTICS ================= -->
+        <section class="stats-row">
+
+            <!-- TOTAL -->
+            <div class="stat-card">
+
+                <div class="stat-icon blue">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </div>
+
+                <div class="stat-content">
+
+                    <h6>Total Orders</h6>
+
+                    <h2 id="totalOrders">0</h2>
+
+                    <p>All time orders</p>
+
+                </div>
+
+            </div>
+
+
+            <!-- PENDING -->
+            <div class="stat-card">
+
+                <div class="stat-icon green">
+                    <i class="fa-solid fa-box"></i>
+                </div>
+
+                <div class="stat-content">
+
+                    <h6>Pending Orders</h6>
+
+                    <h2 id="pendingOrders">0</h2>
+
+                    <p>Awaiting processing</p>
+
+                </div>
+
+            </div>
+
+
+            <!-- COMPLETED -->
+            <div class="stat-card">
+
+                <div class="stat-icon orange">
+                    <i class="fa-solid fa-truck"></i>
+                </div>
+
+                <div class="stat-content">
+
+                    <h6>Completed Orders</h6>
+
+                    <h2 id="completedOrders">0</h2>
+
+                    <p>Successfully delivered</p>
+
+                </div>
+
+            </div>
+
+
+            <!-- CANCELLED -->
+            <div class="stat-card">
+
+                <div class="stat-icon red">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </div>
+
+                <div class="stat-content">
+
+                    <h6>Cancelled Orders</h6>
+
+                    <h2 id="cancelledOrders">0</h2>
+
+                    <p>Cancelled orders</p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= FILTERS ================= -->
+        <section class="filter-section">
+
+            <div class="filter-input">
+
+                <input
+                    type="text"
+                    id="searchOrder"
+                    placeholder="Search by Order ID"
+                >
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+            </div>
+
+
+            <div class="filter-input">
+
+                <input
+                    type="text"
+                    id="searchCustomer"
+                    placeholder="Search by Customer"
+                >
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+
+            <select
+                class="filter-select"
+                id="filterStatus"
+            >
+                <option value="">All Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Processing">Processing</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
+
+
+            <div class="date-range-box">
+
+                <div class="date-field">
+
+                    <label>From</label>
+
+                    <input
+                        type="date"
+                        id="fromDate"
+                    >
+
+                </div>
+
+                <span class="date-arrow">→</span>
+
+                <div class="date-field">
+
+                    <label>To</label>
+
+                    <input
+                        type="date"
+                        id="toDate"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="filter-btn"
+                id="filterBtn"
+            >
+                <i class="fa-solid fa-filter"></i>
+                <span>Filter</span>
+            </button>
+
+        </section>
+
+
+        <!-- ================= ORDERS TABLE ================= -->
+        <section class="orders-card">
+
+            <div class="table-responsive">
+
+                <table class="table orders-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                <input
+                                    type="checkbox"
+                                    id="selectAll"
+                                >
+                            </th>
+
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Mobile</th>
+                            <th>Items</th>
+                            <th>Total Amount</th>
+                            <th>Status</th>
+                            <th>Order Date</th>
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="orderTableBody">
+
+                        <tr>
+
+                            <td
+                                colspan="9"
+                                class="loading-cell"
+                            >
+
+                                <i class="fa-solid fa-spinner fa-spin"></i>
+
+                                <p>Loading orders...</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     CREATE / EDIT ORDER MODAL
+========================================================= -->
+<div class="order-custom-modal" id="orderModal">
+    <div class="order-modal-dialog">
+        <div class="order-modal-header">
+            <h3 id="modalTitle">Create Order</h3>
+            <button type="button" class="order-modal-close" id="closeModal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <form id="orderForm">
+            <input type="hidden" id="orderId">
+
+            <div class="order-modal-body">
+                <!-- Customer Selection -->
+                <div class="order-form-group">
+                    <label>Customer <span class="text-danger">*</span></label>
+                    <div class="customer-select-row">
+                        <select id="orderCustomer" required>
+                            <option value="">Select Customer</option>
+                        </select>
+                        <button type="button" class="btn-quick-add-customer" id="quickAddCustomerBtn" title="Add New Customer">
+                            <i class="fa-solid fa-user-plus"></i> Add Customer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Products Selection Section -->
+                <div class="order-items-builder">
+                    <label>Add Products to Order <span class="text-danger">*</span></label>
+                    <div class="item-input-row">
+                        <select id="orderProductSelect">
+                            <option value="">Select Product</option>
+                        </select>
+                        <input type="number" id="orderProductPrice" placeholder="Price" min="0" step="0.01">
+                        <input type="number" id="orderQuantityInput" placeholder="Qty" min="1" value="1">
+                        <button type="button" class="btn-add-item" id="addItemBtn">
+                            <i class="fa-solid fa-plus"></i> Add
+                        </button>
+                    </div>
+
+                    <!-- Selected Items Table -->
+                    <div class="selected-items-wrapper">
+                        <table class="selected-items-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Qty</th>
+                                    <th>Subtotal</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="selectedItemsBody">
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-3">No items added yet.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="order-total-summary">
+                        <span>Total Amount:</span>
+                        <strong id="orderTotalSpan">₹0.00</strong>
+                    </div>
+                </div>
+
+                <!-- Payment & Order Status Details -->
+                <div class="order-grid-2">
+                    <div class="order-form-group">
+                        <label>Payment Method</label>
+                        <select id="orderPaymentMethod">
+                            <option value="Cash">Cash</option>
+                            <option value="UPI">UPI</option>
+                            <option value="Card">Card</option>
+                        </select>
+                    </div>
+
+                    <div class="order-form-group">
+                        <label>Payment Status</label>
+                        <select id="orderPaymentStatus">
+                            <option value="Pending">Pending</option>
+                            <option value="Paid">Paid</option>
+                            <option value="Partial Paid">Partial Paid</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="order-grid-2">
+                    <div class="order-form-group">
+                        <label>Order Status</label>
+                        <select id="orderStatusInput">
+                            <option value="Pending">Pending</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <div class="order-form-group">
+                        <label>Order Date</label>
+                        <input type="date" id="orderDateInput">
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-modal-footer">
+                <button type="button" class="btn-order-cancel" id="cancelBtn">Cancel</button>
+                <button type="submit" class="btn-order-save" id="saveBtn">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Order
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- =========================================================
+     ADD CUSTOMER MODAL
+========================================================= -->
+<div class="order-custom-modal" id="customerModal" style="z-index: 2100;">
+    <div class="order-modal-dialog" style="max-width: 480px;">
+        <div class="order-modal-header">
+            <h3>Add New Customer</h3>
+            <button type="button" class="order-modal-close" id="closeCustomerModal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <form id="quickCustomerForm">
+            <div class="order-modal-body">
+                <div class="order-form-group">
+                    <label>Customer Name <span class="text-danger">*</span></label>
+                    <input type="text" id="newCustomerName" required placeholder="e.g. Rajesh Patel">
+                </div>
+                <div class="order-grid-2">
+                    <div class="order-form-group">
+                        <label>Phone Number <span class="text-danger">*</span></label>
+                        <input type="tel" id="newCustomerPhone" required placeholder="e.g. 9876543210" maxlength="10">
+                    </div>
+                    <div class="order-form-group">
+                        <label>City</label>
+                        <input type="text" id="newCustomerCity" placeholder="e.g. Ahmedabad">
+                    </div>
+                </div>
+                <div class="order-form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="newCustomerEmail" placeholder="e.g. rajesh@example.com">
+                </div>
+                <div class="order-form-group">
+                    <label>Address</label>
+                    <input type="text" id="newCustomerAddress" placeholder="e.g. 101 Galaxy Tower">
+                </div>
+            </div>
+            <div class="order-modal-footer">
+                <button type="button" class="btn-order-cancel" id="cancelCustomerBtn">Cancel</button>
+                <button type="submit" class="btn-order-save" id="saveCustomerBtn">
+                    <i class="fa-solid fa-check"></i> Save Customer
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- =========================================================
+     VIEW ORDER DETAILS MODAL
+========================================================= -->
+<div class="order-custom-modal" id="viewOrderModal">
+    <div class="order-modal-dialog view-dialog">
+        <div class="order-modal-header">
+            <h3>Order Details</h3>
+            <button type="button" class="order-modal-close" id="closeViewModal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="order-modal-body" id="viewModalContent">
+            <!-- Dynamically populated in order.js -->
+        </div>
+        <div class="order-modal-footer">
+            <button type="button" class="btn-order-cancel" id="closeViewBtn">Close</button>
+            <button type="button" class="btn-order-save" id="editFromViewBtn">
+                <i class="fa-solid fa-pen-to-square"></i> Edit Order
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- =========================================================
+     DELETE CONFIRMATION MODAL
+========================================================= -->
+<div class="order-custom-modal" id="deleteOrderModal">
+    <div class="order-modal-dialog confirm-dialog">
+        <div class="confirm-icon delete-icon">
+            <i class="fa-solid fa-trash-can"></i>
+        </div>
+        <h4>Delete Order</h4>
+        <p id="deleteModalText">Are you sure you want to delete this order? All items will be permanently removed.</p>
+        <div class="confirm-actions">
+            <button type="button" class="btn-order-cancel" id="cancelDeleteBtn">No, Cancel</button>
+            <button type="button" class="btn-order-delete-confirm" id="confirmDeleteBtn">
+                <i class="fa-solid fa-trash-can"></i> Yes, Delete
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- =========================================================
+     LOGOUT CONFIRMATION MODAL
+========================================================= -->
+<div class="order-custom-modal" id="logoutModal">
+    <div class="order-modal-dialog confirm-dialog">
+        <div class="confirm-icon logout-icon">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </div>
+        <h4>Confirm Logout</h4>
+        <p>Are you sure you want to log out of your session?</p>
+        <div class="confirm-actions">
+            <button type="button" class="btn-order-cancel" id="cancelLogoutBtn">No</button>
+            <button type="button" class="btn-order-logout-confirm" id="confirmLogoutBtn">
+                <i class="fa-solid fa-right-from-bracket"></i> Yes, Logout
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- TOAST CONTAINER -->
+<div class="order-toast-container" id="toastContainer"></div>
+
+
+<!-- ================= BOOTSTRAP JS ================= -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- ================= ORDER JS ================= -->
+<script src="../js/order.js"></script>
+
+</body>
+</html>

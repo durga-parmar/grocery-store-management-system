@@ -1,0 +1,518 @@
+/* ==========================================================================
+   reg.css - Modern Responsive User Registration Form
+   Form 1 Details & Fields + Form 2 Design & Cyan/Blue Gradient Palette
+   Colors: Cyan (#00f2fe, #00d2ff), Teal (#00b4d8), Ocean Blue (#0077b6, #023e8a)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Form 2 Gradient & Color Palette */
+  --primary-cyan: #00d2ff;
+  --primary-teal: #00b4d8;
+  --primary-blue: #0077b6;
+  --deep-blue: #023e8a;
+  
+  --gradient-bg: linear-gradient(135deg, #00f2fe 0%, #4facfe 35%, #00b4d8 65%, #0077b6 100%);
+  --gradient-btn: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+  --gradient-btn-hover: linear-gradient(90deg, #00d2ff 0%, #0056cc 100%);
+  --gradient-text: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
+  --gradient-accent: linear-gradient(90deg, #00d2ff 0%, #0077b6 100%);
+  
+  --card-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --text-label: #334155;
+  
+  --input-border: #e2e8f0;
+  --input-focus-border: #00b4d8;
+  --input-icon-color: #00b4d8;
+  --input-bg: #ffffff;
+  
+  --error-color: #ef4444;
+  --success-color: #10b981;
+  --card-radius: 22px;
+  --input-radius: 10px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 16px;
+  background: var(--gradient-bg);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   Background Ambient Glowing Shapes (Form 2 Fluid Aesthetic)
+   ========================================================================== */
+.bg-shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(85px);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+.shape-1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, #00f2fe 0%, #4facfe 70%);
+  top: -120px;
+  left: -120px;
+}
+
+.shape-2 {
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, #0077b6 0%, #023e8a 80%);
+  bottom: -160px;
+  right: -140px;
+}
+
+.shape-3 {
+  width: 350px;
+  height: 350px;
+  background: #00d2ff;
+  top: 45%;
+  right: 12%;
+  transform: translateY(-50%);
+  opacity: 0.35;
+}
+
+/* ==========================================================================
+   Card Container
+   ========================================================================== */
+.registration-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 680px;
+  margin: auto;
+  animation: cardFadeIn 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes cardFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.registration-card {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  padding: 40px 42px 34px;
+  box-shadow: 0 25px 60px -10px rgba(0, 60, 130, 0.28), 0 10px 30px -5px rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+/* Close Icon Button (✕) from Form 2 */
+.close-card-btn {
+  position: absolute;
+  top: 20px;
+  right: 22px;
+  background: transparent;
+  border: none;
+  font-size: 19px;
+  color: #00b4d8;
+  cursor: pointer;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.25s ease;
+}
+
+.close-card-btn:hover {
+  background: rgba(0, 180, 216, 0.12);
+  color: #0077b6;
+  transform: rotate(90deg);
+}
+
+/* ==========================================================================
+   Header Section (Grocery Store icon, User Registration & Subtitle)
+   ========================================================================== */
+.form-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.header-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.header-icon {
+  font-size: 20px;
+  color: #00b4d8;
+}
+
+.form-title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 4px;
+}
+
+.form-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-bottom: 12px;
+}
+
+.title-accent-bar {
+  width: 54px;
+  height: 3.5px;
+  background: var(--gradient-accent);
+  border-radius: 4px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   Form Grid Layout (2-Column Rows)
+   ========================================================================== */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 6px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.form-label {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-label);
+  margin-bottom: 6px;
+}
+
+/* Input Icon Container */
+.input-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--input-icon-color);
+  font-size: 15px;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+/* Form Controls (Inputs & Select) */
+.form-control {
+  width: 100%;
+  height: 46px;
+  padding: 10px 14px 10px 42px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-main);
+  background-color: var(--input-bg);
+  border: 1.6px solid var(--input-border);
+  border-radius: var(--input-radius);
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.form-control::placeholder {
+  color: #94a3b8;
+  font-size: 13.5px;
+  font-weight: 400;
+}
+
+.form-control:focus {
+  border-color: var(--input-focus-border);
+  box-shadow: 0 0 0 3.5px rgba(0, 180, 216, 0.18);
+}
+
+.form-control.is-invalid {
+  border-color: var(--error-color) !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Password Eye Toggle */
+.password-field .form-control {
+  padding-right: 42px;
+}
+
+.eye-toggle-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #00b4d8;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.eye-toggle-btn:hover {
+  color: #0077b6;
+  transform: translateY(-50%) scale(1.12);
+}
+
+/* Custom Select Styling */
+.select-wrapper {
+  position: relative;
+}
+
+.form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  padding-right: 40px;
+}
+
+.select-chevron {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: #00b4d8;
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+/* Field Validation Error Message */
+.field-error {
+  display: block;
+  font-size: 11.5px;
+  color: var(--error-color);
+  font-weight: 500;
+  margin-top: 4px;
+  min-height: 16px;
+}
+
+/* ==========================================================================
+   Action Buttons (Register & Reset)
+   ========================================================================== */
+.btn-group-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 10px;
+  margin-bottom: 24px;
+}
+
+.btn {
+  height: 48px;
+  border-radius: 10px;
+  font-size: 14.5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  cursor: pointer;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+  letter-spacing: 0.2px;
+}
+
+/* Primary Register Button with Vibrant Form 2 Cyan/Blue Gradient */
+.btn-register {
+  background: var(--gradient-btn);
+  border: none;
+  color: #ffffff;
+  box-shadow: 0 8px 20px -4px rgba(0, 180, 216, 0.45);
+}
+
+.btn-register:hover {
+  background: var(--gradient-btn-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px -4px rgba(0, 114, 255, 0.45);
+}
+
+.btn-register:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(0, 114, 255, 0.3);
+}
+
+/* Secondary Reset Button with Crisp Form 2 Accent Outline */
+.btn-reset {
+  background: #ffffff;
+  border: 1.6px solid var(--input-border);
+  color: var(--text-muted);
+}
+
+.btn-reset:hover {
+  border-color: #00b4d8;
+  color: #0077b6;
+  background: rgba(0, 180, 216, 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px -4px rgba(0, 180, 216, 0.2);
+}
+
+.btn-reset:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   Footer Section (Already have an account? Login)
+   ========================================================================== */
+.form-footer {
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--text-muted);
+}
+
+.login-link {
+  color: #0077b6;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 5px;
+  transition: all 0.2s ease;
+}
+
+.login-link:hover {
+  color: #00b4d8;
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Feedback Alert Banner & Toast Container
+   ========================================================================== */
+.feedback-banner {
+  padding: 11px 16px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: bannerFade 0.3s ease;
+}
+
+@keyframes bannerFade {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.feedback-banner.success {
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.feedback-banner.error {
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast-msg {
+  background: #ffffff;
+  padding: 14px 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 50, 110, 0.18);
+  font-size: 13.5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-left: 4px solid var(--primary-teal);
+  animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast-msg.success {
+  border-left-color: var(--success-color);
+  color: #0f172a;
+}
+
+.toast-msg.error {
+  border-left-color: var(--error-color);
+  color: #0f172a;
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 640px) {
+  .registration-card {
+    padding: 34px 22px 28px;
+    border-radius: 18px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .form-title {
+    font-size: 22px;
+  }
+
+  .btn-group-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}

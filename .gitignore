@@ -1,0 +1,32 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables and sensitive secrets
+.env
+*.local
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# Runtime generated invoice receipts (directory structure preserved via .gitkeep)
+save_billing/*.pdf
+!save_billing/.gitkeep
+
+# Large hardcopy project report (contains university/college student submission data)
+GroceryStoreManagementSystem-HardCopy.pdf
+
+# Operating System temporary files
+Thumbs.db
+ehthumbs.db
+.DS_Store
+
+# IDE and Editor configurations
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Management - Cashier Panel | Grocery Store Management</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Customer Stylesheet -->
+    <link rel="stylesheet" href="../css/cashier_customer.css">
+    <link rel="stylesheet" href="../css/cashier_notifications.css">
+</head>
+<body>
+
+<div class="app-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>CashierPanel</span>
+        </div>
+        <ul class="sidebar-menu">
+            <!-- 1. Dashboard -->
+            <li>
+                <a href="/cashierdash.html">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <!-- 2. New Sale -->
+            <li>
+                <a href="/pos.html">
+                    <i class="fa-solid fa-cash-register"></i>
+                    <span>New Sale</span>
+                </a>
+            </li>
+
+            <!-- 3. Orders -->
+            <li>
+                <a href="/cashier_order.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Orders</span>
+                </a>
+            </li>
+
+            <!-- 4. Customers (Active) -->
+            <li class="active">
+                <a href="/cashier_customer.html">
+                    <i class="fa-solid fa-user-group"></i>
+                    <span>Customers</span>
+                </a>
+            </li>
+
+            <!-- 5. Products -->
+            <li>
+                <a href="/cashier_product.html">
+                    <i class="fa-solid fa-box"></i>
+                    <span>Products</span>
+                </a>
+            </li>
+
+            <!-- 6. Invoices & Receipts -->
+            <li>
+                <a href="/invoice_receipt.html">
+                    <i class="fa-solid fa-file-invoice"></i>
+                    <span>Invoices &amp; Receipts</span>
+                </a>
+            </li>
+
+            <!-- 7. Sales Reports -->
+            <li>
+                <a href="/sales_report.html">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <span>Sales Reports</span>
+                </a>
+            </li>
+
+            <!-- 8. Settings -->
+            <li>
+                <a href="/setting.html">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+        <!-- TOPBAR HEADER -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="hamburger" id="menuBtn" type="button" aria-label="Toggle Sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div>
+                    <h1>Customer Management</h1>
+                    <p class="header-subtitle">Create, view, update, and search store customers for POS checkout.</p>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <div class="date-badge">
+                    <i class="fa-solid fa-calendar-day"></i>
+                    <span id="liveCurrentDate">Loading...</span>
+                </div>
+
+                <!-- Header User Profile (Dynamic Cashier Details) -->
+                <div class="profile-wrapper" id="profileWrapper">
+                    <button class="profile-trigger" id="profileTrigger" type="button" aria-expanded="false" aria-haspopup="true">
+                        <div class="avatar" id="headerAvatar">CA</div>
+                        <div class="profile-info">
+                            <strong id="headerUserName">Cashier</strong>
+                            <span id="headerUserRole">Cashier</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-down" style="font-size: 11px; margin-left: 4px; color: var(--muted);"></i>
+                    </button>
+
+                    <!-- Profile Dropdown Menu -->
+                    <div class="profile-menu" id="profileMenu">
+                        <div class="profile-summary">
+                            <div class="avatar large" id="dropdownAvatar">CA</div>
+                            <div class="summary-details">
+                                <strong id="dropdownFullName">Cashier</strong>
+                                <span id="dropdownEmail">cashier@store.com</span>
+                                <small id="dropdownRole">Cashier</small>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <a href="/setting.html" class="profile-item" id="profileLink">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                        <button class="profile-item logout-item" id="logoutBtn" type="button">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- PAGE BODY CONTENT -->
+        <section class="content">
+            <!-- 1. SUMMARY STATS CARDS (4 CARDS) -->
+            <section class="summary-grid">
+                <!-- Total Customers -->
+                <div class="summary-card">
+                    <div class="summary-icon blue"><i class="fa-solid fa-user-group"></i></div>
+                    <div>
+                        <span>Total Customers</span>
+                        <strong id="kpiTotalCustomers">0</strong>
+                    </div>
+                </div>
+
+                <!-- New Customers Today -->
+                <div class="summary-card">
+                    <div class="summary-icon purple"><i class="fa-solid fa-user-plus"></i></div>
+                    <div>
+                        <span>New Customers Today</span>
+                        <strong id="kpiNewCustomersToday">0</strong>
+                    </div>
+                </div>
+
+                <!-- Active Customers -->
+                <div class="summary-card">
+                    <div class="summary-icon green"><i class="fa-solid fa-user-check"></i></div>
+                    <div>
+                        <span>Active Customers</span>
+                        <strong id="kpiActiveCustomers">0</strong>
+                    </div>
+                </div>
+
+                <!-- Total Orders -->
+                <div class="summary-card">
+                    <div class="summary-icon emerald"><i class="fa-solid fa-cart-shopping"></i></div>
+                    <div>
+                        <span>Total Customer Orders</span>
+                        <strong id="kpiTotalOrders">0</strong>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. SEARCH & FILTER CONTROLS BAR -->
+            <section class="filter-card">
+                <div class="filter-grid">
+                    <!-- Search Input -->
+                    <label class="search-label">
+                        <span><i class="fa-solid fa-magnifying-glass"></i> Search Customer</span>
+                        <input id="searchKeyword" type="text" placeholder="Search by Customer ID (#53), Name, or Mobile...">
+                    </label>
+
+                    <!-- Status Filter -->
+                    <label>
+                        <span>Status</span>
+                        <select id="statusFilter">
+                            <option value="all">All Status</option>
+                            <option value="Active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </label>
+
+                    <!-- Actions -->
+                    <div class="filter-actions">
+                        <button class="primary-btn" id="filterBtn" type="button">
+                            <i class="fa-solid fa-filter"></i> Filter
+                        </button>
+                        <button class="secondary-btn" id="refreshBtn" type="button">
+                            <i class="fa-solid fa-rotate"></i> Refresh
+                        </button>
+                        <button class="add-customer-btn" id="openAddCustomerModalBtn" type="button">
+                            <i class="fa-solid fa-plus"></i> Add Customer
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. CUSTOMER TABLE CARD -->
+            <section class="table-card">
+                <div class="table-header">
+                    <div class="table-title">
+                        <i class="fa-solid fa-users" style="color: var(--green-dark);"></i>
+                        <h3>Customer Directory</h3>
+                    </div>
+                    <span class="customer-count-tag" id="customerCountTag">Showing 0 customers</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="customer-table">
+                        <thead>
+                            <tr>
+                                <th>Customer ID</th>
+                                <th>Customer Name</th>
+                                <th>Mobile</th>
+                                <th>Email</th>
+                                <th>City / Address</th>
+                                <th>Total Orders</th>
+                                <th>Total Purchase</th>
+                                <th>Status</th>
+                                <th style="text-align: center;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customerTableBody">
+                            <tr>
+                                <td colspan="9" class="loading-cell">
+                                    <i class="fa-solid fa-spinner fa-spin"></i> Loading customer records from database...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </main>
+</div>
+
+<!-- ============================================================
+     1. CREATE NEW CUSTOMER MODAL
+     ============================================================ -->
+<div class="modal" id="addCustomerModal">
+    <div class="modal-dialog">
+        <div class="modal-header-bar">
+            <div class="modal-title">
+                <i class="fa-solid fa-user-plus" style="color: var(--green-dark);"></i>
+                <span>Add New Customer</span>
+            </div>
+            <button class="close-modal-btn" id="closeAddModalBtn" type="button" aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <form id="addCustomerForm" class="modal-form">
+            <div class="modal-body-scrollable">
+                <div class="form-grid-two">
+                    <div class="form-group">
+                        <label for="addCustName">Full Name <span class="required">*</span></label>
+                        <input type="text" id="addCustName" placeholder="Enter customer full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addCustPhone">Mobile Number <span class="required">*</span></label>
+                        <input type="tel" id="addCustPhone" placeholder="10-digit mobile number" maxlength="10" required>
+                    </div>
+                </div>
+
+                <div class="form-grid-two">
+                    <div class="form-group">
+                        <label for="addCustEmail">Email Address</label>
+                        <input type="email" id="addCustEmail" placeholder="customer@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="addCustCity">City</label>
+                        <input type="text" id="addCustCity" placeholder="e.g. Rajkot, Ahmedabad, Surat">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="addCustAddress">Address</label>
+                    <textarea id="addCustAddress" rows="2" placeholder="Street address or locality"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="addCustStatus">Status</label>
+                    <select id="addCustStatus">
+                        <option value="Active" selected>Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer-bar">
+                <button type="button" class="secondary-btn" id="cancelAddModalBtn">Cancel</button>
+                <button type="submit" class="primary-btn" id="submitAddCustomerBtn">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Customer
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ============================================================
+     2. READ-ONLY VIEW CUSTOMER MODAL
+     ============================================================ -->
+<div class="modal" id="viewCustomerModal">
+    <div class="modal-dialog">
+        <div class="modal-header-bar">
+            <div class="modal-title">
+                <i class="fa-solid fa-id-card" style="color: var(--green-dark);"></i>
+                <span id="viewModalTitle">Customer Details</span>
+            </div>
+            <button class="close-modal-btn" id="closeViewModalBtn" type="button" aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="modal-body-scrollable">
+            <div class="view-profile-header">
+                <div class="view-avatar" id="viewCustAvatar">CU</div>
+                <div class="view-cust-info">
+                    <h3 id="viewCustName">Customer Name</h3>
+                    <span id="viewCustPhone" class="view-phone"><i class="fa-solid fa-phone"></i> 9876543210</span>
+                    <span id="viewCustStatusBadge" class="status-badge status-active">Active</span>
+                </div>
+            </div>
+
+            <div class="view-details-grid">
+                <div class="view-item">
+                    <span>Customer ID</span>
+                    <strong id="viewCustId">#00</strong>
+                </div>
+                <div class="view-item">
+                    <span>Email Address</span>
+                    <strong id="viewCustEmail">customer@example.com</strong>
+                </div>
+                <div class="view-item">
+                    <span>City</span>
+                    <strong id="viewCustCity">Rajkot</strong>
+                </div>
+                <div class="view-item">
+                    <span>Registration Date</span>
+                    <strong id="viewCustCreated">2026-08-25</strong>
+                </div>
+                <div class="view-item full-width">
+                    <span>Complete Address</span>
+                    <strong id="viewCustAddress">Main Street, Sector 4</strong>
+                </div>
+            </div>
+
+            <div class="view-stats-cards">
+                <div class="view-stat-card">
+                    <i class="fa-solid fa-cart-shopping text-blue"></i>
+                    <div>
+                        <span>Total Orders</span>
+                        <strong id="viewCustTotalOrders">0 Orders</strong>
+                    </div>
+                </div>
+                <div class="view-stat-card">
+                    <i class="fa-solid fa-indian-rupee-sign text-green"></i>
+                    <div>
+                        <span>Total Purchases</span>
+                        <strong id="viewCustTotalPurchase">₹0.00</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer-bar" style="justify-content: flex-end;">
+            <button class="secondary-btn" id="closeViewModalBottomBtn" type="button">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     3. EDIT CUSTOMER MODAL
+     ============================================================ -->
+<div class="modal" id="editCustomerModal">
+    <div class="modal-dialog">
+        <div class="modal-header-bar">
+            <div class="modal-title">
+                <i class="fa-solid fa-user-pen" style="color: var(--blue-dark);"></i>
+                <span id="editModalTitle">Edit Customer</span>
+            </div>
+            <button class="close-modal-btn" id="closeEditModalBtn" type="button" aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <form id="editCustomerForm" class="modal-form">
+            <input type="hidden" id="editCustId">
+            <div class="modal-body-scrollable">
+                <div class="form-grid-two">
+                    <div class="form-group">
+                        <label for="editCustName">Full Name <span class="required">*</span></label>
+                        <input type="text" id="editCustName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCustPhone">Mobile Number <span class="required">*</span></label>
+                        <input type="tel" id="editCustPhone" maxlength="10" required>
+                    </div>
+                </div>
+
+                <div class="form-grid-two">
+                    <div class="form-group">
+                        <label for="editCustEmail">Email Address</label>
+                        <input type="email" id="editCustEmail">
+                    </div>
+                    <div class="form-group">
+                        <label for="editCustCity">City</label>
+                        <input type="text" id="editCustCity">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editCustAddress">Address</label>
+                    <textarea id="editCustAddress" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="editCustStatus">Status</label>
+                    <select id="editCustStatus">
+                        <option value="Active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer-bar">
+                <button type="button" class="secondary-btn" id="cancelEditModalBtn">Cancel</button>
+                <button type="submit" class="primary-btn" id="submitEditCustomerBtn">
+                    <i class="fa-solid fa-check"></i> Update Customer
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- LOGOUT CONFIRMATION MODAL -->
+<div class="modal" id="logoutModal">
+    <div class="modal-card confirm-card">
+        <div class="confirm-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
+        <h2>Confirm Logout</h2>
+        <p>Are you sure you want to log out of your Cashier session?</p>
+        <div class="modal-actions">
+            <button class="secondary-btn" id="cancelLogout" type="button">Cancel</button>
+            <button class="danger-btn" id="confirmLogout" type="button">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Yes, Logout
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toastContainer"></div>
+
+<!-- JAVASCRIPT -->
+<script src="../js/cashier_customer.js"></script>
+<script src="../js/cashier_notifications.js"></script>
+</body>
+</html>

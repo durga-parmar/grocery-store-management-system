@@ -1,0 +1,590 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management - Grocery Store</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Product CSS -->
+    <link rel="stylesheet" href="../css/product.css">
+</head>
+
+<body>
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span>AdminPanel</span>
+    </div>
+
+    <ul class="sidebar-menu">
+        <li>
+            <a href="/admin_dash.html">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="/user_dash.html">
+                <i class="fa-solid fa-users"></i>
+                <span>Users</span>
+            </a>
+        </li>
+
+        <li class="active">
+            <a href="/product.html">
+                <i class="fa-solid fa-box"></i>
+                <span>Products</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="/order.html">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span>Orders</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="/categories.html">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Categories</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="/customer.html">
+                <i class="fa-solid fa-user-group"></i>
+                <span>Customers</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="/setting.html">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+        </li>
+    </ul>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+<main class="main" id="mainContent">
+
+    <!-- =================================================
+         TOP HEADER
+    ================================================== -->
+    <header class="top-header">
+
+        <div class="header-left">
+            <button class="hamburger" id="menuBtn" title="Toggle Sidebar">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <h1>Product Management</h1> 
+        </div>
+
+        <!-- HEADER SEARCH -->
+        <div class="search-box">
+            <input
+                type="text"
+                id="headerSearch"
+                placeholder="Search product ID, name, category..."
+                autocomplete="off"
+            >
+            <button
+                type="button"
+                id="headerSearchBtn"
+                title="Search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+
+        <!-- HEADER RIGHT -->
+        <div class="header-right">
+
+            <div class="header-stat">
+                <span>Total Products</span>
+                <strong id="headerTotalProducts">0</strong>
+            </div>
+
+            <!-- PROFILE DROPDOWN WRAPPER -->
+            <div class="profile-dropdown-wrapper" id="profileDropdownWrapper">
+                <div class="profile-trigger" id="profileTrigger" tabindex="0" role="button" aria-haspopup="true" aria-expanded="false" title="User Menu">
+                    <div class="profile-avatar" id="headerAvatar">
+                        <span>AD</span>
+                    </div>
+                    <div class="profile-info">
+                        <strong id="headerUserName">Admin User</strong>
+                        <span id="headerUserRole">Administrator</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                </div>
+
+                <!-- DROPDOWN MENU -->
+                <div class="profile-dropdown-menu" id="profileDropdownMenu">
+                    <div class="dropdown-header">
+                        <div class="dropdown-avatar" id="dropdownAvatar">
+                            <span>AD</span>
+                        </div>
+                        <div class="dropdown-user-details">
+                            <strong id="dropdownFullName">Admin User</strong>
+                            <span id="dropdownEmail">admin@grocerystore.com</span>
+                            <span class="dropdown-badge badge-active" id="dropdownStatusBadge">Active</span>
+                        </div>
+                    </div>
+
+                    <div class="dropdown-divider"></div>
+
+                    <a href="/setting.html" class="dropdown-item" id="dropdownProfileLink">
+                        <i class="fa-solid fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <button type="button" class="dropdown-item dropdown-logout" id="dropdownLogoutBtn">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =================================================
+         CONTENT
+    ================================================== -->
+    <section class="content">
+
+        <!-- PAGE TITLE & CREATE BUTTON -->
+        <div class="page-heading">
+            <div>
+                <h2>Products</h2>
+                <p>Manage and track all store products dynamically</p>
+            </div>
+
+            <button
+                class="create-product-btn"
+                id="createProductBtn">
+                <i class="fa-solid fa-plus"></i>
+                Create Product
+            </button>
+        </div>
+
+
+        <!-- =================================================
+             SUMMARY CARDS
+        ================================================== -->
+        <section class="summary-grid">
+
+            <!-- TOTAL -->
+            <div class="summary-card">
+                <div class="summary-icon total-icon">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                </div>
+                <div>
+                    <span>Total Products</span>
+                    <strong id="totalProducts">0</strong>
+                    <small>All store products</small>
+                </div>
+            </div>
+
+            <!-- IN STOCK -->
+            <div class="summary-card">
+                <div class="summary-icon stock-icon">
+                    <i class="fa-solid fa-box-open"></i>
+                </div>
+                <div>
+                    <span>In Stock</span>
+                    <strong id="inStockProducts">0</strong>
+                    <small>Available for sale</small>
+                </div>
+            </div>
+
+            <!-- LOW STOCK -->
+            <div class="summary-card">
+                <div class="summary-icon low-icon">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div>
+                    <span>Low Stock</span>
+                    <strong id="lowStockProducts">0</strong>
+                    <small>Reorder soon (&le; 10)</small>
+                </div>
+            </div>
+
+            <!-- OUT OF STOCK -->
+            <div class="summary-card">
+                <div class="summary-icon out-icon">
+                    <i class="fa-solid fa-box"></i>
+                </div>
+                <div>
+                    <span>Out of Stock</span>
+                    <strong id="outStockProducts">0</strong>
+                    <small>Inventory empty</small>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SEARCH & FILTER
+        ================================================== -->
+        <section class="filter-card">
+
+            <div class="filter-title">
+                <i class="fa-solid fa-filter"></i>
+                <span>Search & Filter Products</span>
+            </div>
+
+            <div class="filter-section">
+
+                <!-- PRODUCT ID -->
+                <div class="filter-input">
+                    <label>Product ID</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-hashtag"></i>
+                        <input
+                            type="text"
+                            id="searchProductId"
+                            placeholder="Enter Product ID"
+                        >
+                    </div>
+                </div>
+
+                <!-- PRODUCT NAME -->
+                <div class="filter-input">
+                    <label>Product Name</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-box"></i>
+                        <input
+                            type="text"
+                            id="searchProductName"
+                            placeholder="Enter Product Name"
+                        >
+                    </div>
+                </div>
+
+                <!-- CATEGORY -->
+                <div class="filter-input">
+                    <label>Category</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <select id="searchCategory">
+                            <option value="">All Categories</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- STATUS -->
+                <div class="filter-input">
+                    <label>Status</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <select id="searchStatus">
+                            <option value="">All Status</option>
+                            <option value="in stock">In Stock</option>
+                            <option value="low stock">Low Stock</option>
+                            <option value="Out of stock">Out of Stock</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- FROM DATE -->
+                <div class="filter-input date-input">
+                    <label>From</label>
+                    <div class="input-wrapper">
+                        <input
+                            type="date"
+                            id="dateFrom"
+                        >
+                    </div>
+                </div>
+
+                <!-- TO DATE -->
+                <div class="filter-input date-input">
+                    <label>To</label>
+                    <div class="input-wrapper">
+                        <input
+                            type="date"
+                            id="dateTo"
+                        >
+                    </div>
+                </div>
+
+                <!-- ACTION BUTTONS -->
+                <div class="filter-actions-wrapper">
+                    <button class="filter-btn" id="filterBtn">
+                        <i class="fa-solid fa-filter"></i>
+                        Filter
+                    </button>
+                    <button class="clear-filter-btn" id="clearFilterBtn" title="Reset Filters">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        Reset
+                    </button>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PRODUCT LIST HEADER
+        ================================================== -->
+        <div class="result-header">
+            <div>
+                <h3>Product List</h3>
+                <p id="searchResultText">Showing all products</p>
+            </div>
+        </div>
+
+
+        <!-- =================================================
+             PRODUCT TABLE
+        ================================================== -->
+        <section class="table-card">
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="check-column">
+                                <input type="checkbox" id="selectAllProducts">
+                            </th>
+                            <th>Product ID</th>
+                            <th>Image</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                            <th>Join Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="productTableBody">
+                        <!-- Dynamic rows loaded from MySQL via product.js -->
+                        <tr>
+                            <td colspan="10">
+                                <div class="empty-data">
+                                    <div class="empty-icon">
+                                        <i class="fa-solid fa-spinner fa-spin"></i>
+                                    </div>
+                                    <h2>Loading Products...</h2>
+                                    <p>Connecting to database.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+    </section>
+
+</main>
+
+
+<!-- =====================================================
+     CREATE / EDIT PRODUCT MODAL
+===================================================== -->
+<div class="modal" id="productModal">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h2 id="modalTitle">Create Product</h2>
+            <button class="close-modal" id="closeProductModal" title="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <form id="productForm">
+            <input type="hidden" id="productId">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Product Name <span class="req">*</span></label>
+                    <input
+                        type="text"
+                        id="productName"
+                        required
+                        placeholder="e.g. Fresh Red Apple"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Category <span class="req">*</span></label>
+                    <select id="productCategory" required>
+                        <option value="">Select Category</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Price (₹) <span class="req">*</span></label>
+                    <input
+                        type="number"
+                        id="productPrice"
+                        min="0"
+                        step="0.01"
+                        required
+                        placeholder="e.g. 120.00"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Stock Quantity <span class="req">*</span></label>
+                    <input
+                        type="number"
+                        id="productStock"
+                        min="0"
+                        required
+                        placeholder="e.g. 50"
+                    >
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Status <span class="req">*</span></label>
+                    <select id="productStatus" required>
+                        <option value="in stock">In Stock</option>
+                        <option value="low stock">Low Stock</option>
+                        <option value="Out of stock">Out of Stock</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Product Image</label>
+                    <input
+                        type="file"
+                        id="productImage"
+                        accept="image/*"
+                    >
+                </div>
+            </div>
+
+            <!-- IMAGE PREVIEW -->
+            <div class="image-preview-box" id="imagePreviewBox" style="display: none;">
+                <img id="imagePreview" src="" alt="Product Preview">
+                <span id="previewName"></span>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="cancel-btn" id="cancelProduct">
+                    Cancel
+                </button>
+                <button type="submit" class="save-btn" id="saveProductBtn">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Save Product
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+<!-- =====================================================
+     VIEW PRODUCT DETAILS MODAL
+===================================================== -->
+<div class="modal" id="viewProductModal">
+    <div class="modal-content view-modal-content">
+
+        <div class="modal-header">
+            <h2>Product Details</h2>
+            <button class="close-modal" id="closeViewModal" title="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="view-modal-body" id="viewModalBody">
+            <!-- Dynamically populated in product.js -->
+        </div>
+
+        <div class="modal-actions">
+            <button type="button" class="cancel-btn" id="closeViewBtn">Close</button>
+            <button type="button" class="save-btn" id="viewEditShortcutBtn">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Edit Product
+            </button>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- =====================================================
+     DELETE CONFIRMATION MODAL
+===================================================== -->
+<div class="modal" id="deleteProductModal">
+    <div class="modal-content confirm-modal-content">
+        <div class="confirm-icon-box delete-icon-box">
+            <i class="fa-solid fa-trash-can"></i>
+        </div>
+        <h3>Delete Product</h3>
+        <p id="deleteConfirmText">Are you sure you want to delete this product? This action cannot be undone.</p>
+        <div class="modal-actions modal-actions-center">
+            <button type="button" class="cancel-btn" id="cancelDeleteBtn">Cancel</button>
+            <button type="button" class="delete-btn-modal" id="confirmDeleteBtn">
+                <i class="fa-solid fa-trash-can"></i>
+                Yes, Delete
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- =====================================================
+     LOGOUT CONFIRMATION MODAL
+===================================================== -->
+<div class="modal" id="logoutModal">
+    <div class="modal-content confirm-modal-content">
+        <div class="confirm-icon-box logout-icon-box">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </div>
+        <h3>Confirm Logout</h3>
+        <p>Are you sure you want to log out of your session?</p>
+        <div class="modal-actions modal-actions-center">
+            <button type="button" class="cancel-btn" id="cancelLogoutBtn">Cancel</button>
+            <button type="button" class="delete-btn-modal logout-confirm-btn" id="confirmLogoutBtn">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Yes, Logout
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- =====================================================
+     TOAST NOTIFICATIONS CONTAINER
+===================================================== -->
+<div class="toast-container" id="toastContainer"></div>
+
+
+<!-- Product JS -->
+<script src="../js/product.js"></script>
+
+</body>
+</html>

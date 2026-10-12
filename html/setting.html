@@ -1,0 +1,478 @@
+﻿<!-- c:\wamp64\www\demo\categories.py c:\wamp64\www\demo\categories.js c:\wamp64\www\demo\categories.html c:\wamp64\www\demo\categories.css<!DOCTYPE html> -->
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings & User Profile - Grocery Store Management System</title>
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Setting Dashboard Stylesheet -->
+    <link rel="stylesheet" href="../css/setting.css">
+</head>
+
+<body>
+
+    <div class="app-layout">
+
+        <!-- =====================================================
+             SIDEBAR
+        ====================================================== -->
+        <aside class="sidebar" id="sidebar">
+
+            <div class="logo">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span>Grocery Store</span>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="/admin_dash.html">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/user_dash.html">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Users</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/cashier_customer.html">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Customers</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/product.html">
+                        <i class="fa-solid fa-box"></i>
+                        <span>Products</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/order.html">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span>Orders</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/categories.html">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span>Categories</span>
+                    </a>
+                </li>
+
+                <li class="active">
+                    <a href="/setting.html">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+
+        </aside>
+
+
+        <!-- =====================================================
+             MAIN CONTENT
+        ====================================================== -->
+        <div class="main" id="mainContent">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="hamburger" id="hamburgerBtn" type="button" title="Toggle Navigation">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div>
+                        <h1>Settings &amp; User Profile</h1>
+                        <p class="topbar-subtitle">Manage user account profile, store details, and system preferences</p>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="top-user-pill" id="topUserPill" title="Click to view Account / Logout" style="cursor:pointer;">
+                        <div class="top-avatar" id="topAvatar">
+                            <span>--</span>
+                        </div>
+                        <div class="top-user-info">
+                            <strong id="topUserName">Loading...</strong>
+                            <span id="topUserRole">Administrator</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+
+            <!-- CONTENT BODY -->
+            <main class="content">
+
+                <!-- =============================================
+                     1. USER PROFILE SECTION (MySQL 'registration')
+                ============================================== -->
+                <section class="card profile-card" id="profileSection">
+
+                    <div class="card-header-flex">
+                        <div>
+                            <h2><i class="fa-solid fa-user-gear"></i> User Profile</h2>
+                            <p class="card-desc">View and update your personal account details dynamically linked to MySQL 'registration' table.</p>
+                        </div>
+                    </div>
+
+                    <!-- PROFILE BANNER & AVATAR -->
+                    <div class="profile-hero">
+                        <div class="avatar-container" id="profileAvatarContainer">
+                            <div class="hero-avatar" id="heroAvatar">
+                                <span>--</span>
+                            </div>
+                        </div>
+
+                        <div class="hero-info">
+                            <div class="hero-name-row">
+                                <h3 id="heroFullName">Loading...</h3>
+                                <span class="badge-role" id="heroRole">Admin</span>
+                                <span class="status-badge badge-active" id="heroStatusBadge">Active</span>
+                            </div>
+                            <p class="hero-username" id="heroUsername">@username</p>
+                            <p class="hero-meta" id="heroMeta">User ID: #-- | Joined: ----</p>
+                        </div>
+                    </div>
+
+                    <!-- PROFILE EDIT FORM -->
+                    <form id="profileForm" novalidate>
+
+                        <div class="form-row">
+                            <!-- USER ID (Read-only) -->
+                            <div class="form-group">
+                                <label for="profileId">User ID</label>
+                                <div class="input-icon-wrap">
+                                    <i class="fa-solid fa-hashtag"></i>
+                                    <input type="text" id="profileId" name="profileId" value="" readonly disabled style="background:var(--border); cursor:not-allowed;">
+                                </div>
+                            </div>
+
+                            <!-- FULL NAME -->
+                            <div class="form-group">
+                                <label for="profileFullName">Customer Name / Full Name <span class="required">*</span></label>
+                                <div class="input-icon-wrap">
+                                    <i class="fa-solid fa-user"></i>
+                                    <input type="text" id="profileFullName" name="profileFullName" placeholder="Enter full name" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <!-- USERNAME -->
+                            <div class="form-group">
+                                <label for="profileUsername">Username <span class="required">*</span></label>
+                                <div class="input-icon-wrap">
+                                    <i class="fa-solid fa-at"></i>
+                                    <input type="text" id="profileUsername" name="profileUsername" placeholder="Enter username" required>
+                                </div>
+                            </div>
+
+                            <!-- EMAIL -->
+                            <div class="form-group">
+                                <label for="profileEmail">Email Address <span class="required">*</span></label>
+                                <div class="input-icon-wrap">
+                                    <i class="fa-solid fa-envelope"></i>
+                                    <input type="email" id="profileEmail" name="profileEmail" placeholder="Enter email address" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <!-- MOBILE NUMBER -->
+                            <div class="form-group">
+                                <label for="profileMobile">Mobile Number <span class="required">*</span></label>
+                                <div class="input-icon-wrap">
+                                    <i class="fa-solid fa-phone"></i>
+                                    <input type="tel" id="profileMobile" name="profileMobile" placeholder="Enter 10-digit mobile number" maxlength="15" required>
+                                </div>
+                            </div>
+
+                            <!-- ADDRESS / CITY -->
+                            <div class="form-group">
+                                <label for="profileAddress">Address / City</label>
+                                <div class="input-icon-wrap">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <input type="text" id="profileAddress" name="profileAddress" placeholder="e.g. Surat, Gujarat">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <!-- ROLE -->
+                            <div class="form-group">
+                                <label for="profileRole">Role <span class="required">*</span></label>
+                                <div class="input-icon-wrap">
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                    <select id="profileRole" name="profileRole" required>
+                                        <option value="Admin">Admin</option>
+                                        <option value="Cashier">Cashier</option>
+                                        <option value="Manager">Manager</option>
+                                        <option value="Staff">Staff</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- STATUS -->
+                            <div class="form-group">
+                                <label for="profileStatus">Account Status <span class="required">*</span></label>
+                                <div class="input-icon-wrap">
+                                    <i class="fa-solid fa-toggle-on"></i>
+                                    <select id="profileStatus" name="profileStatus" required>
+                                        <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PROFILE PICTURE URL / DP -->
+                        <div class="form-group">
+                            <label for="profilePicture">Profile Photo URL <small style="color:var(--text-muted); font-weight:normal;">(Optional - leave blank to automatically generate dynamic initials)</small></label>
+                            <div class="input-icon-wrap">
+                                <i class="fa-solid fa-image"></i>
+                                <input type="text" id="profilePicture" name="profilePicture" placeholder="https://example.com/photo.jpg or relative uploads/ path">
+                            </div>
+                        </div>
+
+                        <!-- PASSWORD CHANGE (OPTIONAL) -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="newPassword">New Password <small style="color:var(--text-muted); font-weight:normal;">(Leave blank to keep current)</small></label>
+                                <div class="input-icon-wrap">
+                                    <i class="fa-solid fa-lock"></i>
+                                    <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password</label>
+                                <div class="input-icon-wrap">
+                                    <i class="fa-solid fa-lock-open"></i>
+                                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter new password">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" id="profileSubmitBtn">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                <span>Update Profile</span>
+                            </button>
+                            <span class="form-message" id="profileMessage"></span>
+                        </div>
+
+                    </form>
+
+                </section>
+
+
+                <!-- =============================================
+                     2. STORE INFORMATION SECTION (MySQL 'settings_tab')
+                ============================================== -->
+                <section class="card" id="storeSection">
+                    <h2><i class="fa-solid fa-store"></i> Store Information</h2>
+                    <p class="card-desc">These details appear on grocery store receipts, invoices, and exported reports.</p>
+
+                    <form id="storeForm" novalidate>
+                        <div class="form-group">
+                            <label for="storeName">Store Name</label>
+                            <div class="input-icon-wrap">
+                                <i class="fa-solid fa-shop"></i>
+                                <input type="text" id="storeName" name="storeName" placeholder="e.g. GroceryHub" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="storeAddress">Store Address</label>
+                            <div class="input-icon-wrap">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                                <input type="text" id="storeAddress" name="storeAddress" placeholder="e.g. 68, MG ROAD, RAJKOT, GUJRAT" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="storePhone">Phone Number</label>
+                                <div class="input-icon-wrap">
+                                    <i class="fa-solid fa-phone-volume"></i>
+                                    <input type="tel" id="storePhone" name="storePhone" placeholder="e.g. 9876543212" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="storeEmail">Email Address</label>
+                                <div class="input-icon-wrap">
+                                    <i class="fa-solid fa-envelope-open-text"></i>
+                                    <input type="email" id="storeEmail" name="storeEmail" placeholder="e.g. groceryhub@example.com" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" id="storeSubmitBtn">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                <span>Save Store Settings</span>
+                            </button>
+                            <span class="form-message" id="storeMessage"></span>
+                        </div>
+                    </form>
+                </section>
+
+
+                <!-- =============================================
+                     3. SYSTEM SETTINGS (MySQL 'settings_tab')
+                ============================================== -->
+                <section class="card" id="systemSection">
+                    <h2><i class="fa-solid fa-sliders"></i> System Settings</h2>
+                    <p class="card-desc">Control currency format, date display, and system notifications.</p>
+
+                    <form id="systemForm" novalidate>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="currency">Currency</label>
+                                <div class="input-icon-wrap">
+                                    <i class="fa-solid fa-money-bill-wave"></i>
+                                    <select id="currency" name="currency">
+                                        <option value="INR" selected>INR - Indian Rupee (₹)</option>
+                                        <option value="EUR">EUR - Euro (€)</option>
+                                        <option value="USD">USD - US Dollar ($)</option>
+                                        <option value="GBP">GBP - British Pound (£)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="dateFormat">Date Format</label>
+                                <div class="input-icon-wrap">
+                                    <i class="fa-solid fa-calendar"></i>
+                                    <select id="dateFormat" name="dateFormat">
+                                        <option value="DD/MM/YYYY" selected>DD/MM/YYYY (e.g. 24/08/2026)</option>
+                                        <option value="MM/DD/YYYY">MM/DD/YYYY (e.g. 08/24/2026)</option>
+                                        <option value="YYYY-MM-DD">YYYY-MM-DD (e.g. 2026-08-24)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group toggle-row">
+                            <div class="toggle-label-wrap">
+                                <strong>System Notifications</strong>
+                                <small>Receive sound and banner alerts for new orders.</small>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="notifications" name="notifications" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" id="systemSubmitBtn">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                <span>Save System Settings</span>
+                            </button>
+                            <span class="form-message" id="systemMessage"></span>
+                        </div>
+                    </form>
+                </section>
+
+
+                <!-- =============================================
+                     4. APPEARANCE (MySQL 'settings_tab')
+                ============================================== -->
+                <section class="card" id="appearanceSection">
+                    <h2><i class="fa-solid fa-palette"></i> Appearance</h2>
+                    <p class="card-desc">Choose between Light Mode and Dark Mode for the application.</p>
+
+                    <div class="theme-options">
+                        <label class="theme-option" id="themeLightOption">
+                            <input type="radio" name="theme" value="light" id="themeLight" checked>
+                            <div class="theme-box">
+                                <i class="fa-solid fa-sun" style="color:#f59e0b; font-size:22px;"></i>
+                                <span>Light Mode</span>
+                            </div>
+                        </label>
+
+                        <label class="theme-option" id="themeDarkOption">
+                            <input type="radio" name="theme" value="dark" id="themeDark">
+                            <div class="theme-box">
+                                <i class="fa-solid fa-moon" style="color:#6366f1; font-size:22px;"></i>
+                                <span>Dark Mode</span>
+                            </div>
+                        </label>
+                    </div>
+                    <span class="form-message" id="appearanceMessage"></span>
+                </section>
+
+
+                <!-- =============================================
+                     5. ACCOUNT SESSION & LOGOUT
+                ============================================== -->
+                <section class="card" id="accountSection">
+                    <h2><i class="fa-solid fa-right-from-bracket"></i> Account Session</h2>
+                    <p class="card-desc">Sign out securely from your current administrative session.</p>
+
+                    <div class="account-actions">
+                        <button id="logoutBtnMain" class="btn btn-danger" type="button">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            Logout
+                        </button>
+                    </div>
+                    <span class="form-message" id="accountMessage"></span>
+                </section>
+
+            </main>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         LOGOUT CONFIRMATION MODAL
+    ====================================================== -->
+    <div class="modal-overlay" id="logoutConfirmModal">
+        <div class="modal-card confirmation-card">
+
+            <div class="confirm-icon-wrap logout-icon-box">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </div>
+
+            <h3>Confirm Logout</h3>
+            <p>Are you sure you want to log out of your account session?</p>
+
+            <div class="modal-footer confirmation-footer">
+                <button type="button" class="btn btn-secondary" id="cancelLogoutBtn">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-primary" id="confirmLogoutBtn">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    Yes, Logout
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- TOAST NOTIFICATIONS CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+
+    <!-- JAVASCRIPT -->
+    <script src="../js/setting.js"></script>
+
+</body>
+
+</html>

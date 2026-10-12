@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports & Analytics</title>
+    <link rel="stylesheet" href="../css/reports.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar or Navigation can go here if needed, keeping it focused on Reports -->
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1>Reports & Analytics</h1>
+                <div class="date-filter">
+                    <button class="filter-btn active" data-range="today">Today</button>
+                    <button class="filter-btn" data-range="yesterday">Yesterday</button>
+                    <button class="filter-btn" data-range="last7days">Last 7 Days</button>
+                    <button class="filter-btn" data-range="last30days">Last 30 Days</button>
+                    <button class="filter-btn" data-range="thisMonth">This Month</button>
+                    <button class="filter-btn" data-range="thisYear">This Year</button>
+                    
+                    <div class="custom-date-container">
+                        <label>From: <input type="date" id="dateFrom"></label>
+                        <label>To: <input type="date" id="dateTo"></label>
+                        <button class="filter-btn apply-btn" id="applyCustomDate">Apply</button>
+                    </div>
+                </div>
+            </header>
+
+            <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+                <div class="spinner"></div>
+                <p>Loading report data...</p>
+            </div>
+            <div id="errorOverlay" class="error-overlay" style="display: none;">
+                <p>Unable to load report data.</p>
+            </div>
+
+            <!-- KPI Section -->
+            <section class="kpi-grid">
+                <div class="kpi-card"><div class="kpi-title">Total Sales</div><div class="kpi-value" id="kpiTotalSales">₹0</div></div>
+                <div class="kpi-card"><div class="kpi-title">Total Orders</div><div class="kpi-value" id="kpiTotalOrders">0</div></div>
+                <div class="kpi-card"><div class="kpi-title">Total Products</div><div class="kpi-value" id="kpiTotalProducts">0</div></div>
+                <div class="kpi-card"><div class="kpi-title">Total Customers</div><div class="kpi-value" id="kpiTotalCustomers">0</div></div>
+                <div class="kpi-card"><div class="kpi-title">Today's Sales</div><div class="kpi-value" id="kpiTodaySales">₹0</div></div>
+                <div class="kpi-card"><div class="kpi-title">Today's Orders</div><div class="kpi-value" id="kpiTodayOrders">0</div></div>
+                <div class="kpi-card"><div class="kpi-title">Low Stock Products</div><div class="kpi-value" id="kpiLowStock">0</div></div>
+                <div class="kpi-card"><div class="kpi-title">Cancelled Orders</div><div class="kpi-value" id="kpiCancelledOrders">0</div></div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-container">
+                <!-- Row 1 -->
+                <div class="chart-row">
+                    <div class="chart-card">
+                        <h3>Sales by Category</h3>
+                        <div class="canvas-container"><canvas id="chartSalesByCategory"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Sales Distribution by Category</h3>
+                        <div class="canvas-container"><canvas id="chartSalesDistribution"></canvas></div>
+                    </div>
+                </div>
+                
+                <!-- Row 2 -->
+                <div class="chart-row">
+                    <div class="chart-card">
+                        <h3>Monthly Sales Trend</h3>
+                        <div class="canvas-container"><canvas id="chartMonthlySales"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Daily Sales Trend</h3>
+                        <div class="canvas-container"><canvas id="chartDailySales"></canvas></div>
+                    </div>
+                </div>
+
+                <!-- Row 3 -->
+                <div class="chart-row">
+                    <div class="chart-card">
+                        <h3>Top 10 Best-Selling Products</h3>
+                        <div class="canvas-container"><canvas id="chartTopSelling"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Order Status Distribution</h3>
+                        <div class="canvas-container"><canvas id="chartOrderStatus"></canvas></div>
+                    </div>
+                </div>
+
+                <!-- Row 4 -->
+                <div class="chart-row">
+                    <div class="chart-card">
+                        <h3>Payment Method Distribution</h3>
+                        <div class="canvas-container"><canvas id="chartPaymentMethod"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Quantity Sold by Category</h3>
+                        <div class="canvas-container"><canvas id="chartQuantityByCategory"></canvas></div>
+                    </div>
+                </div>
+
+                <!-- Row 5 -->
+                <div class="chart-row">
+                    <div class="chart-card">
+                        <h3>Product-wise Revenue</h3>
+                        <div class="canvas-container"><canvas id="chartProductRevenue"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Top 10 Customers by Orders</h3>
+                        <div class="canvas-container"><canvas id="chartTopCustomers"></canvas></div>
+                    </div>
+                </div>
+
+                <!-- Row 6 -->
+                <div class="chart-row">
+                    <div class="chart-card">
+                        <h3>Current Stock by Category</h3>
+                        <div class="canvas-container"><canvas id="chartStockByCategory"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Low Stock Products</h3>
+                        <div class="canvas-container"><canvas id="chartLowStock"></canvas></div>
+                    </div>
+                </div>
+
+                <!-- Row 7 -->
+                <div class="chart-row">
+                    <div class="chart-card">
+                        <h3>Today's Sales vs Yesterday's Sales</h3>
+                        <div class="canvas-container"><canvas id="chartSalesComparison"></canvas></div>
+                        <div id="salesComparisonText" style="text-align: center; margin-top: 10px; font-weight: bold; font-size: 1.1em;"></div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+    <script src="../js/reports.js"></script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Registration | Grocery Store Management System</title>
+  
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  
+  <!-- Google Fonts: Poppins & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Custom Modern CSS with Form 2 Color Combination -->
+  <link rel="stylesheet" href="../css/reg.css">
+</head>
+<body>
+
+  <!-- Background Decorative Glowing Shapes -->
+  <div class="bg-shape shape-1"></div>
+  <div class="bg-shape shape-2"></div>
+  <div class="bg-shape shape-3"></div>
+
+  <!-- Main Registration Container -->
+  <div class="registration-wrapper">
+    <div class="registration-card">
+      
+      <!-- Close Button '✕' -->
+      <button type="button" class="close-card-btn" id="closeCardBtn" aria-label="Close form" title="Close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Form Header -->
+      <div class="form-header">
+        <div class="header-icon-wrapper">
+          <i class="fa-solid fa-basket-shopping header-icon"></i>
+        </div>
+        <h1 class="form-title">User Registration</h1>
+        <p class="form-subtitle">Create a new account for the Grocery Store Management System</p>
+        <div class="title-accent-bar"></div>
+      </div>
+
+      <!-- Feedback Alert Banner -->
+      <div id="feedbackBanner" class="feedback-banner" style="display: none;"></div>
+
+      <!-- Registration Form -->
+      <form id="registrationForm" novalidate autocomplete="off">
+        
+        <!-- Row 1: Full Name & Username -->
+        <div class="form-row">
+          <!-- Full Name -->
+          <div class="form-group">
+            <label class="form-label" for="regFullName">Full Name</label>
+            <div class="input-icon-wrapper">
+              <span class="input-icon"><i class="fa-regular fa-user"></i></span>
+              <input 
+                type="text" 
+                id="regFullName" 
+                name="fullName" 
+                class="form-control" 
+                placeholder="Enter full name" 
+                required
+              >
+            </div>
+            <span class="field-error" id="errFullName"></span>
+          </div>
+
+          <!-- Username -->
+          <div class="form-group">
+            <label class="form-label" for="regUsername">Username</label>
+            <div class="input-icon-wrapper">
+              <span class="input-icon"><i class="fa-solid fa-at"></i></span>
+              <input 
+                type="text" 
+                id="regUsername" 
+                name="username" 
+                class="form-control" 
+                placeholder="Enter username" 
+                required
+              >
+            </div>
+            <span class="field-error" id="errUsername"></span>
+          </div>
+        </div>
+
+        <!-- Row 2: Password & Confirm Password -->
+        <div class="form-row">
+          <!-- Password -->
+          <div class="form-group">
+            <label class="form-label" for="regPassword">Password</label>
+            <div class="input-icon-wrapper password-field">
+              <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+              <input 
+                type="password" 
+                id="regPassword" 
+                name="password" 
+                class="form-control" 
+                placeholder="Enter password" 
+                required
+              >
+              <button type="button" class="eye-toggle-btn" id="togglePasswordBtn" aria-label="Toggle password visibility">
+                <i class="fa-regular fa-eye" id="passwordEyeIcon"></i>
+              </button>
+            </div>
+            <span class="field-error" id="errPassword"></span>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-group">
+            <label class="form-label" for="regConfirmPassword">Confirm Password</label>
+            <div class="input-icon-wrapper password-field">
+              <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+              <input 
+                type="password" 
+                id="regConfirmPassword" 
+                name="confirmPassword" 
+                class="form-control" 
+                placeholder="Confirm password" 
+                required
+              >
+              <button type="button" class="eye-toggle-btn" id="toggleConfirmPasswordBtn" aria-label="Toggle confirm password visibility">
+                <i class="fa-regular fa-eye" id="confirmPasswordEyeIcon"></i>
+              </button>
+            </div>
+            <span class="field-error" id="errConfirmPassword"></span>
+          </div>
+        </div>
+
+        <!-- Row 3: Mobile Number & Email -->
+        <div class="form-row">
+          <!-- Mobile Number -->
+          <div class="form-group">
+            <label class="form-label" for="regMobile">Mobile Number</label>
+            <div class="input-icon-wrapper">
+              <span class="input-icon"><i class="fa-solid fa-phone"></i></span>
+              <input 
+                type="tel" 
+                id="regMobile" 
+                name="mobile" 
+                class="form-control" 
+                placeholder="10 digit mobile number" 
+                maxlength="10" 
+                required
+              >
+            </div>
+            <span class="field-error" id="errMobile"></span>
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label class="form-label" for="regEmail">Email</label>
+            <div class="input-icon-wrapper">
+              <span class="input-icon"><i class="fa-regular fa-envelope"></i></span>
+              <input 
+                type="email" 
+                id="regEmail" 
+                name="email" 
+                class="form-control" 
+                placeholder="Enter email address" 
+                required
+              >
+            </div>
+            <span class="field-error" id="errEmail"></span>
+          </div>
+        </div>
+
+        <!-- Row 4: Role -->
+        <div class="form-group">
+          <label class="form-label" for="regRole">Role</label>
+          <div class="input-icon-wrapper select-wrapper">
+            <span class="input-icon"><i class="fa-solid fa-user-group"></i></span>
+            <select id="regRole" name="role" class="form-control form-select" required>
+              <option value="" disabled selected hidden>Select Role</option>
+              <option value="Admin">Admin</option>
+              <option value="Cashier">Cashier</option>
+            </select>
+            <span class="select-chevron"><i class="fa-solid fa-chevron-down"></i></span>
+          </div>
+          <span class="field-error" id="errRole"></span>
+        </div>
+
+        <!-- Action Buttons: Register & Reset -->
+        <div class="btn-group-row">
+          <!-- Register Button -->
+          <button type="submit" class="btn btn-register" id="btnRegister">
+            <i class="fa-solid fa-user-plus"></i>
+            <span class="btn-text">Register</span>
+            <i class="fa-solid fa-circle-notch fa-spin btn-spinner" style="display: none;"></i>
+          </button>
+
+          <!-- Reset Button -->
+          <button type="button" class="btn btn-reset" id="btnReset">
+            <i class="fa-solid fa-rotate-right"></i>
+            <span>Reset</span>
+          </button>
+        </div>
+
+        <!-- Footer Link: Already have an account? Login -->
+        <div class="form-footer">
+          <span>Already have an account?</span>
+          <a href="/login.html" class="login-link">Login</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Client-side Logic Script -->
+  <script src="../js/reg.js"></script>
+</body>
+</html>

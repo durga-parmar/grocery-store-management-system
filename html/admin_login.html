@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Login</title>
+
+<link rel="stylesheet" href="../css/admin_login.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Admin Login</h1>
+
+<div id="loginAlert" style="display:none; padding:10px 14px; border-radius:8px; margin-bottom:15px; font-size:13.5px; font-weight:600; text-align:left;"></div>
+
+<form id="adminLoginForm" onsubmit="return handleAdminLogin(event)"> 
+
+<input type="text"
+id="adminUsername"
+name="username"
+placeholder="Enter Username or Email" required autocomplete="username">
+
+<input type="password"
+id="adminPassword"
+name="password"
+placeholder="Enter Password" required autocomplete="current-password">
+
+<button type="submit" id="adminLoginBtn">Login</button>
+
+</form>
+
+<p style="margin-top:20px;">
+<a href="/login.html" style="color:#2e7d32; text-decoration:none; font-weight:bold;">← Back to Role Selection</a>
+</p>
+
+</div>
+
+<script src="../js/admin_login.js?v=2"></script>
+
+</body>
+</html>

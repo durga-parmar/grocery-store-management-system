@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS - Cashier New Sale | Grocery Store Management System</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- POS Stylesheet -->
+    <link rel="stylesheet" href="../css/pos.css">
+    <link rel="stylesheet" href="../css/cashier_notifications.css">
+</head>
+<body>
+
+<div class="pos-app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>CashierPanel</span>
+        </div>
+        <ul class="sidebar-menu">
+            <!-- 1. Dashboard -->
+            <li>
+                <a href="/cashierdash.html">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <!-- 2. New Sale (Active) -->
+            <li class="active">
+                <a href="/pos.html">
+                    <i class="fa-solid fa-cash-register"></i>
+                    <span>New Sale</span>
+                </a>
+            </li>
+
+            <!-- 3. Orders -->
+            <li>
+                <a href="/cashier_order.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Orders</span>
+                </a>
+            </li>
+
+            <!-- 4. Customers -->
+            <li>
+                <a href="/cashier_customer.html">
+                    <i class="fa-solid fa-user-group"></i>
+                    <span>Customers</span>
+                </a>
+            </li>
+
+            <!-- 5. Products -->
+            <li>
+                <a href="/cashier_product.html">
+                    <i class="fa-solid fa-box"></i>
+                    <span>Products</span>
+                </a>
+            </li>
+
+            <!-- 6. Invoices & Receipts -->
+            <li>
+                <a href="/invoice_receipt.html">
+                    <i class="fa-solid fa-file-invoice"></i>
+                    <span>Invoices &amp; Receipts</span>
+                </a>
+            </li>
+
+            <!-- 7. Sales Reports -->
+            <li>
+                <a href="/sales_report.html">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <span>Sales Reports</span>
+                </a>
+            </li>
+
+            <!-- 8. Settings -->
+            <li>
+                <a href="/setting.html">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- MAIN POS WRAPPER -->
+    <main class="pos-main">
+        <!-- TOPBAR HEADER -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="hamburger" id="menuBtn" type="button" aria-label="Toggle Sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="pos-title-block">
+                    <h1>Point of Sale (POS)</h1>
+                    <span class="pos-badge"><i class="fa-solid fa-bolt"></i> New Cash Sale</span>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <div class="date-badge">
+                    <i class="fa-solid fa-calendar-day"></i>
+                    <span id="liveCurrentDate">Loading...</span>
+                </div>
+
+                <!-- Header User Profile (Dynamic Cashier Details) -->
+                <div class="profile-wrapper" id="profileWrapper">
+                    <button class="profile-trigger" id="profileTrigger" type="button" aria-expanded="false" aria-haspopup="true">
+                        <div class="avatar" id="headerAvatar">CA</div>
+                        <div class="profile-info">
+                            <strong id="headerUserName">Cashier</strong>
+                            <span id="headerUserRole">Cashier</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-down" style="font-size: 11px; margin-left: 4px; color: var(--muted);"></i>
+                    </button>
+
+                    <!-- Profile Dropdown Menu -->
+                    <div class="profile-menu" id="profileMenu">
+                        <div class="profile-summary">
+                            <div class="avatar large" id="dropdownAvatar">CA</div>
+                            <div class="summary-details">
+                                <strong id="dropdownFullName">Cashier</strong>
+                                <span id="dropdownEmail">cashier@store.com</span>
+                                <small id="dropdownRole">Cashier</small>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <a href="/setting.html" class="profile-item" id="profileLink">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                        <button class="profile-item logout-item" id="logoutBtn" type="button">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- POS WORKSPACE (SINGLE CLEAN SCREEN) -->
+        <div class="pos-workspace">
+            <!-- LEFT COLUMN: CUSTOMER & PRODUCT CATALOG -->
+            <section class="pos-catalog-panel">
+                <!-- CUSTOMER SELECTOR BAR -->
+                <div class="customer-select-bar">
+                    <div class="cust-input-group">
+                        <i class="fa-solid fa-user-tag cust-icon"></i>
+                        <select id="customerSelect" class="customer-dropdown">
+                            <option value="1">Aarav Patel (9876543210) - Rajkot</option>
+                        </select>
+                    </div>
+                    <div class="cust-badge" id="selectedCustomerBadge">
+                        <i class="fa-solid fa-circle-check"></i> Customer: <strong id="selectedCustomerName">Aarav Patel</strong>
+                    </div>
+                </div>
+
+                <!-- PRODUCT FILTER & SEARCH CONTROLS -->
+                <div class="catalog-controls">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="productSearchInput" placeholder="Search product by name or ID (1 to 25)..." autocomplete="off">
+                        <button id="clearSearchBtn" type="button" title="Clear Search"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <!-- Category Pills -->
+                    <div class="category-pills" id="categoryPills">
+                        <button class="pill active" data-cat="all" type="button">All Items</button>
+                        <button class="pill" data-cat="6" type="button">Fruits</button>
+                        <button class="pill" data-cat="7" type="button">Vegetables</button>
+                        <button class="pill" data-cat="8" type="button">Dairy</button>
+                        <button class="pill" data-cat="9" type="button">Cold Drinks</button>
+                        <button class="pill" data-cat="10" type="button">Dry Fruits</button>
+                        <button class="pill" data-cat="11" type="button">Snacks</button>
+                    </div>
+                </div>
+
+                <!-- PRODUCT CARDS GRID (SCROLLABLE) -->
+                <div class="product-grid" id="productGrid">
+                    <!-- Loaded dynamically by JavaScript -->
+                    <div class="loading-state">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Loading catalog products...
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT COLUMN: CURRENT SALE CART & CHECKOUT -->
+            <section class="pos-cart-panel">
+                <!-- CART HEADER -->
+                <div class="cart-header">
+                    <div>
+                        <h2>Current Sale</h2>
+                        <span class="order-preview-tag" id="orderPreviewTag">Order Preview #...</span>
+                    </div>
+                    <button class="clear-btn" id="clearCartBtn" type="button" title="Clear Sale">
+                        <i class="fa-solid fa-trash-can"></i> Reset Sale
+                    </button>
+                </div>
+
+                <!-- CART ITEMS LIST (SCROLLABLE TABLE) -->
+                <div class="cart-items-wrapper">
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Price</th>
+                                <th style="text-align:center;">Qty</th>
+                                <th style="text-align:right;">Subtotal</th>
+                                <th style="text-align:center;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cartTableBody">
+                            <tr class="empty-cart-row">
+                                <td colspan="5">
+                                    <div class="empty-cart">
+                                        <i class="fa-solid fa-basket-shopping"></i>
+                                        <p>Your sale cart is currently empty.</p>
+                                        <small>Click products from the catalog to add to this sale.</small>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- CART BILLING & CASH PAYMENT (CASH ONLY) -->
+                <div class="cart-checkout-panel">
+                    <!-- Summary Totals -->
+                    <div class="bill-summary">
+                        <div class="bill-row">
+                            <span>Total Items:</span>
+                            <strong id="totalItemCount">0 items</strong>
+                        </div>
+                        <div class="bill-row">
+                            <span>Subtotal:</span>
+                            <span id="billSubtotal">₹0.00</span>
+                        </div>
+                        <div class="bill-row grand-total-row">
+                            <span>Grand Total:</span>
+                            <strong id="billGrandTotal">₹0.00</strong>
+                        </div>
+                    </div>
+
+                    <!-- Payment Section (Cash Only) -->
+                    <div class="payment-box">
+                        <div class="payment-method-tag">
+                            <i class="fa-solid fa-money-bill-wave"></i> Payment Method: <strong>Cash Only</strong>
+                        </div>
+
+                        <div class="cash-input-group">
+                            <label for="cashReceivedInput">Cash Received (₹):</label>
+                            <div class="input-prefix">
+                                <span>₹</span>
+                                <input type="number" id="cashReceivedInput" placeholder="0.00" min="0" step="1" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <!-- Quick Cash Note Buttons -->
+                        <div class="quick-cash-buttons">
+                            <button type="button" class="quick-cash-btn" data-amt="exact">Exact</button>
+                            <button type="button" class="quick-cash-btn" data-amt="50">+₹50</button>
+                            <button type="button" class="quick-cash-btn" data-amt="100">+₹100</button>
+                            <button type="button" class="quick-cash-btn" data-amt="500">+₹500</button>
+                            <button type="button" class="quick-cash-btn" data-amt="2000">+₹2000</button>
+                        </div>
+
+                        <!-- Change Due / Return Display -->
+                        <div class="change-due-box" id="changeDueBox">
+                            <span>Change to Return:</span>
+                            <strong id="changeAmount">₹0.00</strong>
+                        </div>
+                    </div>
+
+                    <!-- ACTION BUTTONS -->
+                    <div class="checkout-actions">
+                        <button class="complete-sale-btn" id="completeSaleBtn" type="button" disabled>
+                            <i class="fa-solid fa-circle-check"></i> Complete Cash Sale
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<!-- SALE SUCCESS MODAL -->
+<div class="modal" id="saleSuccessModal">
+    <div class="modal-card success-card">
+        <div class="success-icon-wrapper">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h2>Sale Completed Successfully!</h2>
+        <p class="success-order-num">Order ID: <strong id="successOrderId">#000</strong></p>
+
+        <div class="receipt-summary-box">
+            <div class="summary-line">
+                <span>Customer:</span>
+                <strong id="successCustomerName">Aarav Patel</strong>
+            </div>
+            <div class="summary-line">
+                <span>Total Amount:</span>
+                <strong id="successTotalAmount" style="color:var(--green-dark);">₹0.00</strong>
+            </div>
+            <div class="summary-line">
+                <span>Payment Mode:</span>
+                <span class="badge-cash">Cash (Paid)</span>
+            </div>
+            <div class="summary-line">
+                <span>Cash Received:</span>
+                <span id="successCashReceived">₹0.00</span>
+            </div>
+            <div class="summary-line">
+                <span>Change Returned:</span>
+                <strong id="successChangeReturned" style="color:var(--blue-dark);">₹0.00</strong>
+            </div>
+        </div>
+
+        <div class="modal-actions-grid">
+            <a href="/invoice_receipt.html" id="printReceiptBtn" class="primary-btn">
+                <i class="fa-solid fa-print"></i> View / Print Receipt
+            </a>
+            <button class="secondary-btn" id="newSaleModalBtn" type="button">
+                <i class="fa-solid fa-plus"></i> Start Next Sale
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- LOGOUT CONFIRMATION MODAL -->
+<div class="modal" id="logoutModal">
+    <div class="modal-card confirm-card">
+        <div class="confirm-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
+        <h2>Confirm Logout</h2>
+        <p>Are you sure you want to log out of your Cashier session?</p>
+        <div class="modal-actions">
+            <button class="secondary-btn" id="cancelLogout" type="button">Cancel</button>
+            <button class="danger-btn" id="confirmLogout" type="button">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Yes, Logout
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST NOTIFICATION CONTAINER -->
+<div id="toastContainer"></div>
+
+<!-- POS CONTROLLER -->
+<script src="../js/pos.js"></script>
+<script src="../js/cashier_notifications.js"></script>
+</body>
+</html>

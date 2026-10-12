@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cashier - Products Management</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Cashier Product Stylesheet -->
+    <link rel="stylesheet" href="../css/cashier_product.css">
+    <link rel="stylesheet" href="../css/cashier_notifications.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <div class="logo">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span>CashierPanel</span>
+    </div>
+    <ul class="sidebar-menu">
+        <!-- 1. Dashboard -->
+        <li>
+            <a href="/cashierdash.html">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <!-- 2. New Sale -->
+        <li>
+            <a href="/pos.html">
+                <i class="fa-solid fa-cash-register"></i>
+                <span>New Sale</span>
+            </a>
+        </li>
+
+        <!-- 3. Orders -->
+        <li>
+            <a href="/cashier_order.html">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span>Orders</span>
+            </a>
+        </li>
+
+        <!-- 4. Customers -->
+        <li>
+            <a href="/cashier_customer.html">
+                <i class="fa-solid fa-user-group"></i>
+                <span>Customers</span>
+            </a>
+        </li>
+
+        <!-- 5. Products (Active) -->
+        <li class="active">
+            <a href="/cashier_product.html">
+                <i class="fa-solid fa-box"></i>
+                <span>Products</span>
+            </a>
+        </li>
+
+        <!-- 6. Invoices & Receipts -->
+        <li>
+            <a href="/invoice_receipt.html">
+                <i class="fa-solid fa-file-invoice"></i>
+                <span>Invoices &amp; Receipts</span>
+            </a>
+        </li>
+
+        <!-- 7. Sales Reports -->
+        <li>
+            <a href="/sales_report.html">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Sales Reports</span>
+            </a>
+        </li>
+
+        <!-- 8. Settings -->
+        <li>
+            <a href="/setting.html">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+    <!-- HEADER -->
+    <header class="top-header">
+        <div class="header-left">
+            <button class="hamburger" id="menuBtn" type="button" aria-label="Toggle Sidebar">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <h1>Product Management</h1>
+        </div>
+
+        <div class="search-box">
+            <input id="headerSearch" type="text" placeholder="Quick search product ID, name, category..." autocomplete="off">
+            <button id="headerSearchBtn" type="button" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+
+        <div class="header-right">
+            <div class="header-stat">
+                <span>Total Products</span>
+                <strong id="headerTotalProducts">0</strong>
+            </div>
+
+            <!-- Header User Profile (Dynamic Cashier Info) -->
+            <div class="profile-wrapper" id="profileWrapper">
+                <button class="profile-trigger" id="profileTrigger" type="button" aria-expanded="false" aria-haspopup="true">
+                    <div class="avatar" id="headerAvatar">CA</div>
+                    <div class="profile-info">
+                        <strong id="headerUserName">Loading...</strong>
+                        <span id="headerUserRole">Cashier</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down" style="font-size: 11px; margin-left: 4px; color: var(--muted);"></i>
+                </button>
+
+                <!-- Profile Dropdown Menu -->
+                <div class="profile-menu" id="profileMenu">
+                    <div class="profile-summary">
+                        <div class="avatar large" id="dropdownAvatar">CA</div>
+                        <div class="summary-details">
+                            <strong id="dropdownFullName">Loading...</strong>
+                            <span id="dropdownEmail">cashier@example.com</span>
+                            <small id="dropdownRole">Cashier</small>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <a href="/setting.html" class="profile-item" id="profileLink">
+                        <i class="fa-solid fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                    <button class="profile-item logout-item" id="logoutBtn" type="button">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENT SECTION -->
+    <section class="content">
+        <div class="page-heading">
+            <div>
+                <h2>Products</h2>
+                <p>View product catalog, pricing, and live inventory stock.</p>
+            </div>
+            <span class="view-only"><i class="fa-solid fa-shield-halved"></i> Cashier View Mode</span>
+        </div>
+
+        <!-- 1. SUMMARY CARDS -->
+        <section class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-icon blue"><i class="fa-solid fa-boxes-stacked"></i></div>
+                <div>
+                    <span>Total Products</span>
+                    <strong id="totalProducts">0</strong>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon green"><i class="fa-solid fa-box-open"></i></div>
+                <div>
+                    <span>Available Products</span>
+                    <strong id="inStockProducts">0</strong>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon orange"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div>
+                    <span>Low Stock Products</span>
+                    <strong id="lowStockProducts">0</strong>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon red"><i class="fa-solid fa-box"></i></div>
+                <div>
+                    <span>Out of Stock Products</span>
+                    <strong id="outStockProducts">0</strong>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. SEARCH & FILTER SECTION -->
+        <section class="filter-card">
+            <div class="filter-title">
+                <i class="fa-solid fa-filter"></i> Search &amp; Filter Products
+            </div>
+            <div class="filter-grid">
+                <label>
+                    Product ID
+                    <input id="searchProductId" type="text" placeholder="e.g. 1, 2, 3">
+                </label>
+                <label>
+                    Product Name
+                    <input id="searchProductName" type="text" placeholder="Enter product name">
+                </label>
+                <label>
+                    Category
+                    <select id="searchCategory">
+                        <option value="">All Categories</option>
+                    </select>
+                </label>
+                <label>
+                    Stock Status
+                    <select id="searchStatus">
+                        <option value="">All Status</option>
+                        <option value="in stock">In Stock</option>
+                        <option value="low stock">Low Stock</option>
+                        <option value="out of stock">Out of Stock</option>
+                    </select>
+                </label>
+                <label>
+                    From Date
+                    <input type="date" id="dateFrom">
+                </label>
+                <label>
+                    To Date
+                    <input type="date" id="dateTo">
+                </label>
+            </div>
+            <div class="filter-actions-bar">
+                <button class="primary-btn" id="filterBtn" type="button">
+                    <i class="fa-solid fa-magnifying-glass"></i> Filter
+                </button>
+                <button class="secondary-btn" id="clearFilterBtn" type="button">
+                    <i class="fa-solid fa-rotate-left"></i> Reset
+                </button>
+            </div>
+        </section>
+
+        <!-- 3. PRODUCT TABLE SECTION -->
+        <div class="result-header">
+            <div>
+                <h3>Product Inventory</h3>
+                <p id="searchResultText">Loading products from database...</p>
+            </div>
+        </div>
+
+        <section class="table-card">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product ID</th>
+                            <th>Image</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Selling Price</th>
+                            <th>Available Stock</th>
+                            <th>Stock Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody">
+                        <tr>
+                            <td colspan="8" class="loading">
+                                <i class="fa-solid fa-spinner fa-spin"></i> Fetching products from MySQL...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </section>
+</main>
+
+<!-- READ-ONLY PRODUCT VIEW MODAL -->
+<div class="modal" id="viewModal">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h2><i class="fa-solid fa-circle-info" style="color: var(--blue); margin-right: 8px;"></i> Product Details</h2>
+            <button id="closeView" type="button" aria-label="Close modal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="viewBody"></div>
+        <div class="modal-actions">
+            <button class="secondary-btn" id="closeViewBtn" type="button">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- LOGOUT CONFIRMATION MODAL -->
+<div class="modal" id="logoutModal">
+    <div class="modal-card confirm-card">
+        <div class="confirm-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
+        <h2>Confirm Logout</h2>
+        <p>Are you sure you want to log out of your Cashier session?</p>
+        <div class="modal-actions">
+            <button class="secondary-btn" id="cancelLogout" type="button">Cancel</button>
+            <button class="danger-btn" id="confirmLogout" type="button">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Yes, Logout
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toastContainer"></div>
+
+<!-- JAVASCRIPT -->
+<script src="../js/cashier_product.js"></script>
+<script src="../js/cashier_notifications.js"></script>
+</body>
+</html>

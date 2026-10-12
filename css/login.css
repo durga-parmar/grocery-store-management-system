@@ -1,0 +1,220 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0b2240 0%, #1e457e 50%, #3b71ca 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* મુખ્ય કન્ટેનર */
+.main-container {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+/* વ્હાઇટ ગ્લાસ મોર્ફિઝમ કાર્ડ */
+.login-card {
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 20px;
+    padding: 40px 50px;
+    width: 100%;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+/* હેડર સ્ટાઇલ */
+.header-section .logo-icon {
+    font-size: 45px;
+    color: #0d47a1;
+    margin-bottom: 10px;
+}
+
+.header-section h1 {
+    font-size: 32px;
+    color: #0d47a1;
+    font-weight: 700;
+}
+
+.header-section h2 {
+    font-size: 20px;
+    color: #1565c0;
+    font-weight: 400;
+    margin-bottom: 25px;
+}
+
+/* ડિવાઇડર લાઇન */
+.divider {
+    position: relative;
+    margin: 20px 0 35px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.divider span {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fdfdfd;
+    padding: 0 15px;
+    color: #757575;
+    font-size: 14px;
+}
+
+/* રોલ્સ બોક્સ લેઆઉટ */
+.roles-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.role-box {
+    flex: 1;
+    min-width: 250px;
+    max-width: 320px;
+    border-radius: 15px;
+    padding: 30px 20px;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.role-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* એડમિન બોક્સ (વાદળી) */
+.admin-box {
+    background: linear-gradient(180deg, #0d47a1 0%, #1565c0 100%);
+}
+
+/* કેશિયર બોક્સ (લીલો) */
+.cashier-box {
+    background: linear-gradient(180deg, #00695c 0%, #00897b 100%);
+}
+
+.role-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+.role-box h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.role-box p {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 25px;
+    line-height: 1.4;
+    min-height: 40px;
+}
+
+/* બટન સ્ટાઇલ (Login) */
+.btn {
+    width: 85%;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn i {
+    font-size: 12px;
+}
+
+.btn:hover {
+    background: #ffffff;
+}
+
+.btn-admin:hover {
+    color: #0d47a1;
+}
+
+.btn-cashier:hover {
+    color: #00695c;
+}
+
+/* નીચેની ફૂટર લાઇન */
+.footer-bar {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    color: #ffffff;
+    padding: 10px 0;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-item i {
+    font-size: 24px;
+    opacity: 0.9;
+}
+
+.footer-item div {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-item strong {
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+.footer-item span {
+    font-size: 11px;
+    opacity: 0.7;
+}
+
+/* રિસ્પોન્સિવ ડિઝાઇન */
+@media (max-width: 600px) {
+    .login-card {
+        padding: 30px 20px;
+    }
+    .roles-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .role-box {
+        width: 100%;
+    }
+    .footer-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: 20px;
+    }
+}

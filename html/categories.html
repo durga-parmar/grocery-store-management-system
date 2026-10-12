@@ -1,0 +1,599 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Management - GroceryMS</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Categories Dashboard Stylesheet -->
+    <link rel="stylesheet" href="../css/categories.css">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <!-- =====================================================
+             SIDEBAR
+        ====================================================== -->
+        <aside class="sidebar" id="sidebar">
+
+            <div class="brand">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span>Grocery Store</span>
+            </div>
+
+            <nav class="sidebar-menu">
+
+                <a href="/admin_dash.html" class="menu-item">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="/user_dash.html" class="menu-item">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Users</span>
+                </a>
+
+                <a href="/customer.html" class="menu-item">
+                    <i class="fa-solid fa-user-group"></i>
+                    <span>Customers</span>
+                </a>
+
+                <a href="/product.html" class="menu-item">
+                    <i class="fa-solid fa-box"></i>
+                    <span>Products</span>
+                </a>
+
+                <a href="/order.html" class="menu-item">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Orders</span>
+                </a>
+
+                <a href="/categories.html" class="menu-item active">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span>Categories</span>
+                </a>
+
+                <a href="/setting.html" class="menu-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+
+            </nav>
+
+        </aside>
+
+
+        <!-- =====================================================
+             MAIN CONTENT
+        ====================================================== -->
+        <main class="main-content" id="mainContent">
+
+            <!-- ================= TOP HEADER ================= -->
+            <header class="top-header">
+
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggleBtn" type="button" title="Toggle Navigation">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <h2>Category Management</h2>
+                </div>
+
+                <!-- HEADER SEARCH BAR (Search by Category ID or Name) -->
+                <div class="header-search">
+                    <input
+                        type="text"
+                        id="headerSearch"
+                        placeholder="Search category ID or name..."
+                        autocomplete="off"
+                    >
+                    <button type="button" id="headerSearchBtn" title="Search (Enter)">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+
+                <!-- USER PROFILE & DROPDOWN -->
+                <div class="profile-dropdown-wrapper" id="profileDropdownWrapper">
+                    <div class="profile" id="profileTrigger" tabindex="0" role="button" aria-haspopup="true" aria-expanded="false" title="User Profile Menu">
+                        <div class="profile-avatar-circle" id="headerAvatarCircle">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="profile-meta">
+                            <span class="user-display-name" id="headerUserName">Admin User</span>
+                            <span class="user-display-role" id="headerUserRole">Administrator</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-down profile-arrow"></i>
+                    </div>
+
+                    <!-- DROPDOWN MENU -->
+                    <div class="profile-dropdown-menu" id="profileDropdownMenu">
+                        <div class="dropdown-header-info">
+                            <div class="dropdown-avatar-circle" id="dropdownAvatar">
+                                <span>AD</span>
+                            </div>
+                            <div class="dropdown-details">
+                                <strong id="dropdownFullName">Admin User</strong>
+                                <span id="dropdownEmail">admin@grocerystore.com</span>
+                                <span class="dropdown-status-tag" id="dropdownStatus">Active</span>
+                            </div>
+                        </div>
+
+                        <div class="dropdown-divider"></div>
+
+                        <!-- Option 1: Profile (Redirects to setting.html) -->
+                        <a href="/setting.html" class="dropdown-option" id="profileOptionLink">
+                            <i class="fa-solid fa-user-gear"></i>
+                            <span>Profile</span>
+                        </a>
+
+                        <!-- Option 2: Logout (Opens Logout Confirmation Dialog) -->
+                        <button type="button" class="dropdown-option dropdown-logout-btn" id="logoutOptionBtn">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+
+            </header>
+
+
+            <!-- ================= PAGE CONTENT ================= -->
+            <div class="content">
+
+                <!-- PAGE TITLE & ADD CATEGORY BUTTON -->
+                <section class="page-title">
+                    <div>
+                        <h1>Categories</h1>
+                        <p>Manage and organize all store categories</p>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="add-category-btn"
+                        id="addCategoryBtn"
+                    >
+                        <i class="fa-solid fa-plus"></i>
+                        Add Category
+                    </button>
+                </section>
+
+
+                <!-- ================= STATISTICS ================= -->
+                <section class="stats-container">
+
+                    <!-- TOTAL -->
+                    <div class="stat-card">
+                        <div class="stat-icon total-icon">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span>Total Categories</span>
+                            <strong id="totalCategories">0</strong>
+                        </div>
+                    </div>
+
+                    <!-- ACTIVE -->
+                    <div class="stat-card">
+                        <div class="stat-icon active-icon">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span>Active Categories</span>
+                            <strong id="activeCategories">0</strong>
+                        </div>
+                    </div>
+
+                    <!-- INACTIVE -->
+                    <div class="stat-card">
+                        <div class="stat-icon inactive-icon">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span>Inactive Categories</span>
+                            <strong id="inactiveCategories">0</strong>
+                        </div>
+                    </div>
+
+                    <!-- NEW -->
+                    <div class="stat-card">
+                        <div class="stat-icon new-icon">
+                            <i class="fa-solid fa-folder-plus"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span>New Categories</span>
+                            <strong id="newCategories">0</strong>
+                        </div>
+                    </div>
+
+                </section>
+
+
+                <!-- ================= SEARCH & FILTER ================= -->
+                <section class="filter-card">
+
+                    <div class="filter-heading">
+                        <i class="fa-solid fa-filter"></i>
+                        <h3>Search &amp; Filter Categories</h3>
+                    </div>
+
+                    <div class="filter-row">
+
+                        <!-- CATEGORY ID -->
+                        <div class="filter-field">
+                            <label for="categoryId">Category ID</label>
+                            <div class="input-box">
+                                <i class="fa-solid fa-hashtag"></i>
+                                <input
+                                    type="text"
+                                    id="categoryId"
+                                    placeholder="Enter Category ID"
+                                >
+                            </div>
+                        </div>
+
+                        <!-- CATEGORY NAME -->
+                        <div class="filter-field">
+                            <label for="categoryName">Category Name</label>
+                            <div class="input-box">
+                                <i class="fa-solid fa-folder"></i>
+                                <input
+                                    type="text"
+                                    id="categoryName"
+                                    placeholder="Enter Category Name"
+                                    autocomplete="off"
+                                >
+                            </div>
+                        </div>
+
+                        <!-- STATUS -->
+                        <div class="filter-field">
+                            <label for="statusFilter">Status</label>
+                            <div class="select-box">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <select id="statusFilter">
+                                    <option value="">All Status</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- SORT -->
+                        <div class="filter-field">
+                            <label for="sortBy">Sort By</label>
+                            <div class="select-box">
+                                <i class="fa-solid fa-arrow-down-wide-short"></i>
+                                <select id="sortBy">
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                    <option value="nameAsc">Name A-Z</option>
+                                    <option value="nameDesc">Name Z-A</option>
+                                    <option value="products_desc">Most Products</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- FILTER ACTION BUTTONS -->
+                        <div class="filter-button-wrapper">
+                            <button
+                                type="button"
+                                class="filter-btn"
+                                id="filterBtn"
+                            >
+                                <i class="fa-solid fa-filter"></i>
+                                Filter
+                            </button>
+
+                            <button
+                                type="button"
+                                class="clear-btn"
+                                id="clearFilterBtn"
+                                title="Clear All Filters"
+                            >
+                                <i class="fa-solid fa-rotate-left"></i>
+                                Reset
+                            </button>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================= CATEGORY LIST ================= -->
+                <section class="category-list-section">
+
+                    <div class="list-heading-wrapper">
+                        <div class="list-heading">
+                            <h3>Category List</h3>
+                            <p id="categoryResultText">Loading categories...</p>
+                        </div>
+                        <button type="button" class="refresh-table-btn" id="refreshCategoryBtn" title="Refresh Table">
+                            <i class="fa-solid fa-arrows-rotate"></i> Refresh
+                        </button>
+                    </div>
+
+                    <!-- TABLE -->
+                    <div class="table-card">
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="checkbox-column">
+                                            <input
+                                                type="checkbox"
+                                                id="selectAll"
+                                                title="Select All"
+                                            >
+                                        </th>
+                                        <th>Category ID</th>
+                                        <th>Category Name</th>
+                                        <th>Description</th>
+                                        <th>Total Products</th>
+                                        <th>Status</th>
+                                        <th>Created Date</th>
+                                        <th style="text-align: center;">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="categoryTableBody">
+                                    <tr>
+                                        <td colspan="8" style="text-align: center; padding: 40px;">
+                                            <div class="empty-state">
+                                                <i class="fa-solid fa-spinner fa-spin" style="font-size: 26px; color: #20bd63;"></i>
+                                                <p style="margin-top: 10px; color: #64748b;">Loading category data from database...</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- =====================================================
+         1. VIEW CATEGORY DETAILS MODAL (Strictly Read-Only)
+    ====================================================== -->
+    <div class="modal-overlay" id="viewCategoryModal">
+        <div class="modal-card view-modal-card">
+
+            <div class="modal-header">
+                <h3>
+                    <i class="fa-solid fa-id-card"></i>
+                    Category Details
+                </h3>
+                <button type="button" class="modal-close-btn" id="closeViewModalBtn" title="Close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="view-category-body">
+                <!-- Category Hero Card -->
+                <div class="category-hero-card">
+                    <div class="category-avatar-large" id="viewAvatar">
+                        <span>CA</span>
+                    </div>
+                    <div class="category-hero-info">
+                        <h4 id="viewCategoryName">Category Name</h4>
+                        <div class="category-badges">
+                            <span class="id-tag" id="viewCategoryIdBadge">ID: #1</span>
+                            <span class="status-pill status-active" id="viewStatusPill">Active</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Details Grid (Strictly Read-Only) -->
+                <div class="view-details-grid">
+
+                    <div class="detail-box">
+                        <span class="detail-label"><i class="fa-solid fa-hashtag"></i> Category ID</span>
+                        <span class="detail-value" id="viewCategoryId">#0</span>
+                    </div>
+
+                    <div class="detail-box">
+                        <span class="detail-label"><i class="fa-solid fa-folder"></i> Category Name</span>
+                        <span class="detail-value" id="viewCategoryFullName">-</span>
+                    </div>
+
+                    <div class="detail-box">
+                        <span class="detail-label"><i class="fa-solid fa-box-open"></i> Total Products Linked</span>
+                        <span class="detail-value" id="viewCategoryProducts">0 Products</span>
+                    </div>
+
+                    <div class="detail-box">
+                        <span class="detail-label"><i class="fa-solid fa-circle-check"></i> Status</span>
+                        <span class="detail-value" id="viewCategoryStatusText">Active</span>
+                    </div>
+
+                    <div class="detail-box" style="grid-column: span 2;">
+                        <span class="detail-label"><i class="fa-solid fa-align-left"></i> Description</span>
+                        <span class="detail-value" id="viewCategoryDescription">No description provided.</span>
+                    </div>
+
+                    <div class="detail-box" style="grid-column: span 2;">
+                        <span class="detail-label"><i class="fa-solid fa-calendar-days"></i> Created Date</span>
+                        <span class="detail-value" id="viewCategoryCreatedAt">-</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- View Modal Footer: Only a Simple Close Button (Strictly Read-Only) -->
+            <div class="modal-footer" style="justify-content: flex-end;">
+                <button type="button" class="btn btn-secondary" id="closeViewBtn">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- =====================================================
+         2. CREATE & EDIT CATEGORY MODAL
+    ====================================================== -->
+    <div class="modal-overlay" id="categoryFormModal">
+        <div class="modal-card form-modal-card">
+
+            <div class="modal-header">
+                <h3 id="formModalTitle">
+                    <i class="fa-solid fa-folder-plus"></i>
+                    <span>Create Category</span>
+                </h3>
+                <button type="button" class="modal-close-btn" id="closeFormModalBtn" title="Close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="categoryForm" novalidate>
+
+                <!-- Hidden Category ID for Editing -->
+                <input type="hidden" id="formCategoryId">
+
+                <div class="form-body">
+
+                    <!-- CATEGORY NAME -->
+                    <div class="form-group">
+                        <label for="formCategoryName">Category Name <span class="required-star">*</span></label>
+                        <div class="input-icon-group">
+                            <i class="fa-solid fa-folder"></i>
+                            <input
+                                type="text"
+                                id="formCategoryName"
+                                placeholder="e.g. Fresh Fruits, Bakery &amp; Snacks"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <!-- DESCRIPTION -->
+                    <div class="form-group">
+                        <label for="formCategoryDescription">Description</label>
+                        <div class="textarea-group">
+                            <textarea
+                                id="formCategoryDescription"
+                                rows="3"
+                                placeholder="Brief description about the products in this category..."
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <!-- STATUS -->
+                    <div class="form-group">
+                        <label for="formCategoryStatus">Status <span class="required-star">*</span></label>
+                        <div class="input-icon-group">
+                            <i class="fa-solid fa-toggle-on"></i>
+                            <select id="formCategoryStatus" required>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- ERROR/MESSAGE BANNER -->
+                    <div class="form-feedback-banner" id="formFeedbackBanner"></div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelFormBtn">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="saveCategorySubmitBtn">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span id="saveBtnText">Save Category</span>
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+
+    <!-- =====================================================
+         3. DELETE CONFIRMATION MODAL
+    ====================================================== -->
+    <div class="modal-overlay" id="deleteConfirmModal">
+        <div class="modal-card confirmation-card">
+
+            <div class="confirm-icon-wrap delete-warning-icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+
+            <h3>Delete Category Confirmation</h3>
+            <p>Are you sure you want to delete this category from the database? This action cannot be undone.</p>
+
+            <div class="delete-target-preview" id="deleteTargetPreview">
+                <strong id="deleteCategoryName">Category Name</strong>
+                <span id="deleteCategoryDetails">ID: #0</span>
+            </div>
+
+            <div class="modal-footer confirmation-footer">
+                <button type="button" class="btn btn-secondary" id="cancelDeleteBtn">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                    <i class="fa-solid fa-trash"></i>
+                    Yes, Delete Category
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- =====================================================
+         4. LOGOUT CONFIRMATION DIALOG
+    ====================================================== -->
+    <div class="modal-overlay" id="logoutConfirmModal">
+        <div class="modal-card confirmation-card">
+
+            <div class="confirm-icon-wrap logout-icon-box">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </div>
+
+            <h3>Confirm Logout</h3>
+            <p>Are you sure you want to logout from your account session?</p>
+
+            <div class="modal-footer confirmation-footer">
+                <button type="button" class="btn btn-secondary" id="cancelLogoutBtn">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-primary" id="confirmLogoutBtn">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    Yes, Logout
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- =====================================================
+         TOAST NOTIFICATION CONTAINER
+    ====================================================== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+
+    <!-- =====================================================
+         CATEGORIES DASHBOARD JAVASCRIPT
+    ====================================================== -->
+    <script src="../js/categories.js"></script>
+
+</body>
+
+</html>
