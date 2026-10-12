@@ -5,19 +5,18 @@
 
 // Multi-Candidate Ultra-Fast API Discovery
 const API_CANDIDATES = [
+    "/api",
+    window.location.origin && window.location.origin.startsWith("http") ? `${window.location.origin}/api` : "",
+    "http://localhost:8000/api",
     "http://localhost:9007/api",
     "http://localhost:9010/api",
     "http://localhost:9008/api",
     "http://localhost:9009/api",
     "http://localhost:9013/api",
-    "http://localhost:9000/api",
-    window.location.origin && window.location.origin.startsWith("http") ? `${window.location.origin}/api` : "",
-    window.location.origin && window.location.origin.startsWith("http") ? `${window.location.origin}/demo/api` : "",
-    "http://localhost:90/demo/api",
-    "http://localhost/demo/api"
+    "http://localhost:9000/api"
 ].filter(Boolean);
 
-let API_BASE = "http://localhost:9007/api";
+let API_BASE = "/api";
 let allLoadedCustomers = [];
 let currentCustomers = [];
 let deleteTargetId = null;

@@ -5,21 +5,19 @@
 
 // Candidate API Endpoints for dynamic backend discovery
 const API_CANDIDATES = [
+    "/api",
     window.location.origin && window.location.origin.startsWith("http") ? `${window.location.origin}/api` : "",
-    window.location.origin && window.location.origin.startsWith("http") ? `${window.location.origin}/project/api` : "",
+    "http://localhost:8000/api",
     "http://localhost:9007/api",
     "http://localhost:9010/api",
     "http://localhost:9008/api",
     "http://localhost:9009/api",
     "http://localhost:9013/api",
-    "http://localhost:9000/api",
-    "http://localhost:8000/api",
-    "http://localhost:90/api",
-    "http://localhost/api"
+    "http://localhost:9000/api"
 ].filter(Boolean);
 
-let ACTIVE_API_BASE = "http://localhost:9007/api";
-let isBackendOnline = false;
+let ACTIVE_API_BASE = "/api";
+let isBackendOnline = true;
 
 // ============================================================
 // 1. DEFAULT DATASETS (Matches MySQL 'project' Schema)

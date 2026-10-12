@@ -1,12 +1,12 @@
 const API_CANDIDATES = [
     '/api/reports',
-    'http://localhost:9013/api/reports',
+    'http://localhost:8000/api/reports',
     'http://localhost:9007/api/reports',
-    'http://localhost:9000/api/reports',
-    'http://localhost:8000/api/reports'
+    'http://localhost:9013/api/reports',
+    'http://localhost:9000/api/reports'
 ];
 
-let currentFilter = 'today';
+let currentFilter = 'thisYear';
 let dateFrom = '';
 let dateTo = '';
 
