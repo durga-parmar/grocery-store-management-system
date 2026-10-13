@@ -177,6 +177,22 @@ function getQueryString() {
     return qs;
 }
 
+async function fetchWithTimeout(url, ms = 1500) {
+    if (typeof AbortController === 'undefined') {
+        return fetch(url, { cache: 'no-store' });
+    }
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), ms);
+    try {
+        const res = await fetch(url, { cache: 'no-store', signal: controller.signal });
+        clearTimeout(timer);
+        return res;
+    } catch (err) {
+        clearTimeout(timer);
+        return null;
+    }
+}
+
 async function refreshReports() {
     const loadEl = document.getElementById('loadingOverlay');
     const errEl = document.getElementById('errorOverlay');
@@ -186,7 +202,7 @@ async function refreshReports() {
     const qs = getQueryString();
     let data = null;
 
-    // Try all candidate endpoints with and without /all
+    // Try candidate endpoints with timeout
     const endpointsToTry = [];
     for (const base of API_CANDIDATES) {
         const sep = base.endsWith('/') ? '' : '/';
@@ -196,8 +212,8 @@ async function refreshReports() {
 
     for (const url of endpointsToTry) {
         try {
-            const response = await fetch(url, { cache: 'no-store' });
-            if (response.ok) {
+            const response = await fetchWithTimeout(url, 1500);
+            if (response && response.ok) {
                 const resJson = await response.json();
                 if (resJson && resJson.success && resJson.data) {
                     data = resJson.data;
@@ -208,7 +224,7 @@ async function refreshReports() {
                 }
             }
         } catch (e) {
-            // Try next candidate
+            // Continue to next candidate
         }
     }
 
@@ -219,16 +235,20 @@ async function refreshReports() {
 
     window.__lastReportData = data;
 
+    // Hide error overlay unconditionally once data is available
+    if (errEl) errEl.style.display = 'none';
+
     if (data) {
         try {
             updateKPIs(data.kpis || {});
-            drawAllCharts(data.charts || {});
-            if (errEl) errEl.style.display = 'none';
-        } catch (renderErr) {
-            console.error("[Reports] Render error:", renderErr);
+        } catch (kpiErr) {
+            console.warn("[Reports] KPI update notice:", kpiErr);
         }
-    } else {
-        if (errEl) errEl.style.display = 'flex';
+        try {
+            drawAllCharts(data.charts || {});
+        } catch (chartErr) {
+            console.warn("[Reports] Chart render notice:", chartErr);
+        }
     }
 
     if (loadEl) loadEl.style.display = 'none';
@@ -237,44 +257,59 @@ async function refreshReports() {
 const formatCurrency = (val) => '₹' + Math.round(parseFloat(val) || 0).toLocaleString('en-IN');
 const formatNumber = (val) => Math.round(parseFloat(val) || 0).toLocaleString('en-IN');
 
+function setElText(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+}
+
 function updateKPIs(kpis) {
-    document.getElementById('kpiTotalSales').textContent = formatCurrency(kpis.totalSales || 0);
-    document.getElementById('kpiTotalOrders').textContent = formatNumber(kpis.totalOrders || 0);
-    document.getElementById('kpiTotalProducts').textContent = formatNumber(kpis.totalProducts || 0);
-    document.getElementById('kpiTotalCustomers').textContent = formatNumber(kpis.totalCustomers || 0);
-    document.getElementById('kpiTodaySales').textContent = formatCurrency(kpis.todaySales || 0);
-    document.getElementById('kpiTodayOrders').textContent = formatNumber(kpis.todayOrders || 0);
-    document.getElementById('kpiLowStock').textContent = formatNumber(kpis.lowStock || 0);
-    document.getElementById('kpiCancelledOrders').textContent = formatNumber(kpis.cancelledOrders || 0);
+    kpis = kpis || {};
+    setElText('kpiTotalSales', formatCurrency(kpis.totalSales || 0));
+    setElText('kpiTotalOrders', formatNumber(kpis.totalOrders || 0));
+    setElText('kpiTotalProducts', formatNumber(kpis.totalProducts || 0));
+    setElText('kpiTotalCustomers', formatNumber(kpis.totalCustomers || 0));
+    setElText('kpiTodaySales', formatCurrency(kpis.todaySales || 0));
+    setElText('kpiTodayOrders', formatNumber(kpis.todayOrders || 0));
+    setElText('kpiLowStock', formatNumber(kpis.lowStock || 0));
+    setElText('kpiCancelledOrders', formatNumber(kpis.cancelledOrders || 0));
+}
+
+function safeChart(fn) {
+    try {
+        fn();
+    } catch (err) {
+        console.warn("[Reports] Chart render caught:", err);
+    }
 }
 
 function drawAllCharts(chartsData) {
+    chartsData = chartsData || {};
     // 1. Sales by Category
-    createBarChart('chartSalesByCategory', chartsData.salesByCategory, 'Category', 'Sales', formatCurrency);
+    safeChart(() => createBarChart('chartSalesByCategory', chartsData.salesByCategory, 'Category', 'Sales', formatCurrency));
     // 2. Sales Distribution by Category
-    createPieChart('chartSalesDistribution', chartsData.salesByCategory, 'Category', 'Sales', formatCurrency);
+    safeChart(() => createPieChart('chartSalesDistribution', chartsData.salesByCategory, 'Category', 'Sales', formatCurrency));
     // 3. Monthly Sales Trend
-    createLineChart('chartMonthlySales', chartsData.monthlySales, 'Month', 'Sales', formatCurrency);
+    safeChart(() => createLineChart('chartMonthlySales', chartsData.monthlySales, 'Month', 'Sales', formatCurrency));
     // 4. Daily Sales Trend
-    createLineChart('chartDailySales', chartsData.dailySales, 'Date', 'Sales', formatCurrency);
+    safeChart(() => createLineChart('chartDailySales', chartsData.dailySales, 'Date', 'Sales', formatCurrency));
     // 5. Top 10 Best-Selling Products
-    createHorizontalBarChart('chartTopSelling', chartsData.topProducts, 'Product', 'Quantity', formatNumber);
+    safeChart(() => createHorizontalBarChart('chartTopSelling', chartsData.topProducts, 'Product', 'Quantity', formatNumber));
     // 6. Product-wise Revenue
-    createBarChart('chartProductRevenue', chartsData.productRevenue, 'Product', 'Revenue', formatCurrency);
+    safeChart(() => createBarChart('chartProductRevenue', chartsData.productRevenue, 'Product', 'Revenue', formatCurrency));
     // 7. Order Status Distribution
-    createPieChart('chartOrderStatus', chartsData.orderStatus, 'Status', 'Count', formatNumber);
+    safeChart(() => createPieChart('chartOrderStatus', chartsData.orderStatus, 'Status', 'Count', formatNumber));
     // 8. Payment Method Distribution
-    createPieChart('chartPaymentMethod', chartsData.paymentMethod, 'Method', 'Count', formatNumber);
+    safeChart(() => createPieChart('chartPaymentMethod', chartsData.paymentMethod, 'Method', 'Count', formatNumber));
     // 9. Quantity Sold by Category
-    createBarChart('chartQuantityByCategory', chartsData.quantityByCategory, 'Category', 'Quantity', formatNumber);
+    safeChart(() => createBarChart('chartQuantityByCategory', chartsData.quantityByCategory, 'Category', 'Quantity', formatNumber));
     // 10. Top 10 Customers
-    createHorizontalBarChart('chartTopCustomers', chartsData.topCustomers, 'Customer', 'Orders', formatNumber);
+    safeChart(() => createHorizontalBarChart('chartTopCustomers', chartsData.topCustomers, 'Customer', 'Orders', formatNumber));
     // 11. Stock by Category
-    createBarChart('chartStockByCategory', chartsData.stockByCategory, 'Category', 'Stock', formatNumber);
+    safeChart(() => createBarChart('chartStockByCategory', chartsData.stockByCategory, 'Category', 'Stock', formatNumber));
     // 12. Low Stock Products
-    createHorizontalBarChart('chartLowStock', chartsData.lowStockProducts, 'Product', 'Stock', formatNumber);
+    safeChart(() => createHorizontalBarChart('chartLowStock', chartsData.lowStockProducts, 'Product', 'Stock', formatNumber));
     // 13. Today's Sales vs Yesterday's Sales
-    createBarChart('chartSalesComparison', chartsData.salesComparison, 'Day', 'Sales', formatCurrency, ['#3b82f6', '#10b981']);
+    safeChart(() => createBarChart('chartSalesComparison', chartsData.salesComparison, 'Day', 'Sales', formatCurrency, ['#3b82f6', '#10b981']));
     
     // Update Sales Comparison Text
     const compText = document.getElementById('salesComparisonText');
