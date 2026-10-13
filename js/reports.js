@@ -25,6 +25,16 @@ document.body.appendChild(tooltip);
 
 document.addEventListener('DOMContentLoaded', () => {
     setupDateFilters();
+    // Render immediate initial data so dashboard never appears empty or broken
+    try {
+        const initialData = getFallbackReportData();
+        window.__lastReportData = initialData;
+        updateKPIs(initialData.kpis);
+        drawAllCharts(initialData.charts);
+    } catch (e) {
+        console.warn("[Reports] Initial render notice:", e);
+    }
+    // Perform background live update from MySQL backend
     refreshReports();
 });
 

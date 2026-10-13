@@ -81,7 +81,7 @@ if PYTHON_DIR not in sys.path:
     sys.path.insert(0, PYTHON_DIR)
 
 # List of ports to bind so any frontend script calling specific ports works seamlessly
-PORTS_TO_BIND = [9007, 9000, 9010, 9008, 9009, 9013, 9002, 9006, 8000, 90]
+PORTS_TO_BIND = [9007, 8000, 9013, 9000, 9010, 9008, 9009, 9002, 9006, 8080, 8081]
 
 
 # =============================================================================
@@ -4432,6 +4432,15 @@ def main():
             break
 
     if not primary_server:
+        # Fallback to any dynamically available port in 8000-8050 range
+        for port in range(8001, 8050):
+            srv = start_server_listener(port, is_primary=True)
+            if srv:
+                primary_server = srv
+                primary_port = port
+                break
+
+    if not primary_server:
         print("[ERROR] Could not bind primary server to any port in", unique_ports)
         sys.exit(1)
 
@@ -4488,8 +4497,19 @@ def main():
         primary_server.serve_forever()
     except KeyboardInterrupt:
         print("\nShutting down server gracefully...")
-        primary_server.server_close()
+        try:
+            primary_server.shutdown()
+        except Exception:
+            pass
+        try:
+            primary_server.server_close()
+        except Exception:
+            pass
         for s in secondary_servers:
+            try:
+                s.shutdown()
+            except Exception:
+                pass
             try:
                 s.server_close()
             except Exception:
