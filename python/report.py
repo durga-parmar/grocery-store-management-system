@@ -348,7 +348,7 @@ class RequestHandler(http.server.SimpleHTTPRequestHandler):
                 self._set_headers()
                 self.wfile.write(json.dumps({"success": False, "message": str(e)}).encode())
                 
-        elif parsed_url.path.startswith('/api/reports/all'):
+        elif parsed_url.path.startswith('/api/reports/all') or parsed_url.path.startswith('/api/reports'):
             query_params = parse_qs(parsed_url.query)
             filter_type = query_params.get('filter', ['today'])[0]
             from_date = query_params.get('from', [None])[0]

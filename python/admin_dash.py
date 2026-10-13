@@ -700,7 +700,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
                 self.wfile.write(json.dumps({"error": str(e)}).encode())
 
-        elif self.path.startswith("/api/reports/all"):
+        elif self.path.startswith("/api/reports/all") or self.path.startswith("/api/reports"):
 
             parsed_url = urlparse(self.path)
 
